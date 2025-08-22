@@ -374,19 +374,37 @@ const validateContactForm = (data) => {
   };
 };
 
-// Send email function
+// Send email function with enhanced error handling
 const sendEmail = async (to, template, data) => {
-  const transporter = createTransporter();
-  const emailContent = template(data);
-  
-  const mailOptions = {
-    from: `SkyBrain <${process.env.GMAIL_USER}>`,
-    to: to,
-    subject: emailContent.subject,
-    html: emailContent.html
-  };
-  
-  return await transporter.sendMail(mailOptions);
+  try {
+    console.log(`Attempting to send email to: ${to}`);
+    
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+      throw new Error('Missing Gmail credentials in environment variables');
+    }
+    
+    const transporter = createTransporter();
+    const emailContent = template(data);
+    
+    const mailOptions = {
+      from: `SkyBrain <${process.env.GMAIL_USER}>`,
+      to: to,
+      subject: emailContent.subject,
+      html: emailContent.html
+    };
+    
+    console.log(`Email options configured for: ${to}`);
+    const result = await transporter.sendMail(mailOptions);
+    console.log(`Email sent successfully to: ${to}, messageId: ${result.messageId}`);
+    return result;
+  } catch (error) {
+    console.error(`Email sending failed to ${to}:`, {
+      error: error.message,
+      code: error.code,
+      command: error.command
+    });
+    throw error;
+  }
 };
 
 // Google Sheets webhook function
@@ -526,12 +544,27 @@ module.exports = async function handler(req, res) {
       message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
     });
     
+    // Enhanced logging for debugging
+    console.log('Environment check:', {
+      hasGmailUser: !!process.env.GMAIL_USER,
+      hasGmailPassword: !!process.env.GMAIL_APP_PASSWORD,
+      hasAdminEmail: !!process.env.ADMIN_EMAIL,
+      nodeEnv: process.env.NODE_ENV
+    });
+
     // Run email sending and Google Sheets logging in background (don't wait)
     Promise.allSettled([
       sendEmail(process.env.ADMIN_EMAIL || 'info@skybrain.in', contactEmailTemplate, data),
       sendEmail(data.email, autoReplyTemplate, data),
       logToGoogleSheets(data)
     ]).then(([adminEmailResult, userEmailResult, sheetsResult]) => {
+      // Enhanced logging for debugging
+      console.log('Email sending results:', {
+        adminEmail: adminEmailResult.status,
+        userEmail: userEmailResult.status,
+        googleSheets: sheetsResult.status
+      });
+      
       // Log any failures but don't block the response
       if (adminEmailResult.status === 'rejected') {
         console.error('Admin email failed:', adminEmailResult.reason);
