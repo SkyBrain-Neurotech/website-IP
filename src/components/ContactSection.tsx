@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { submitContactForm, validateContactForm, trackFormSubmission, FormSubmissionData } from '@/lib/formHandler';
+import { validateContactForm, trackFormSubmission } from '@/lib/formHandler';
 import { 
   Mail, 
   MapPin, 
@@ -65,18 +65,21 @@ const ContactSection = () => {
     }
 
     try {
-      const submissionData: FormSubmissionData = {
-        ...formData,
-        timestamp: new Date().toISOString(),
-        source: 'website_contact_form'
-      };
+      // Use our new Google Sheets API integration
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
-      const result = await submitContactForm(submissionData);
+      const result = await response.json();
       
-      if (result.success) {
+      if (response.ok && result.success) {
         setSubmitStatus('success');
         setSubmitMessage(result.message);
-        trackFormSubmission('enhanced_form', true);
+        trackFormSubmission('google_sheets_api', true);
         
         // Reset form
         setFormData({
@@ -88,8 +91,8 @@ const ContactSection = () => {
         });
       } else {
         setSubmitStatus('error');
-        setSubmitMessage(result.message);
-        trackFormSubmission('enhanced_form', false);
+        setSubmitMessage(result.message || 'Form submission failed');
+        trackFormSubmission('google_sheets_api', false);
       }
     } catch (error) {
       setSubmitStatus('error');
