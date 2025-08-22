@@ -13,12 +13,21 @@ class GoogleSheetsWebhookService {
   }
 
   async addUserSubmission(formType, userData) {
+    console.log('=== GOOGLE SHEETS WEBHOOK LOG START ===');
+    console.log('Form Type:', formType);
+    console.log('User Email:', userData.email);
+    console.log('Webhook Configured:', this.isConfigured);
+    console.log('Webhook URL:', this.webhookUrl ? 'SET' : 'NOT SET');
+    
     if (!this.isConfigured) {
-      console.warn('Google Apps Script not configured, skipping data logging');
-      return;
+      console.warn('❌ GOOGLE SHEETS: Not configured - GOOGLE_APPS_SCRIPT_URL missing in .env');
+      console.log('=== GOOGLE SHEETS WEBHOOK LOG END ===');
+      return { success: false, error: 'Not configured' };
     }
 
     try {
+      console.log('🔄 GOOGLE SHEETS: Starting webhook request...');
+      
       // Dynamic import for node-fetch v3
       const fetch = (await import('node-fetch')).default;
       
@@ -27,6 +36,9 @@ class GoogleSheetsWebhookService {
         formType,
         timestamp: new Date().toISOString()
       };
+      
+      console.log('📤 GOOGLE SHEETS: Payload prepared:', JSON.stringify(payload, null, 2));
+      console.log('🌐 GOOGLE SHEETS: Sending POST request to:', this.webhookUrl);
 
       const response = await fetch(this.webhookUrl, {
         method: 'POST',
@@ -36,17 +48,29 @@ class GoogleSheetsWebhookService {
         body: JSON.stringify(payload)
       });
 
+      console.log('📥 GOOGLE SHEETS: Response status:', response.status);
+      console.log('📥 GOOGLE SHEETS: Response statusText:', response.statusText);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('❌ GOOGLE SHEETS: HTTP Error Response Body:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
       }
 
       const result = await response.json();
-      console.log(`User submission logged via webhook: ${userData.email} (${formType})`);
+      console.log('✅ GOOGLE SHEETS: Success! Response:', JSON.stringify(result, null, 2));
+      console.log(`✅ GOOGLE SHEETS: User submission logged: ${userData.email} (${formType})`);
+      console.log('=== GOOGLE SHEETS WEBHOOK LOG END ===');
       
       return result;
     } catch (error) {
-      console.error('Error logging to Google Sheets via webhook:', error);
+      console.error('❌ GOOGLE SHEETS: ERROR during webhook request:');
+      console.error('❌ Error Name:', error.name);
+      console.error('❌ Error Message:', error.message);
+      console.error('❌ Error Stack:', error.stack);
+      console.log('=== GOOGLE SHEETS WEBHOOK LOG END ===');
       // Don't throw error - let the app continue even if logging fails
+      return { success: false, error: error.message };
     }
   }
 

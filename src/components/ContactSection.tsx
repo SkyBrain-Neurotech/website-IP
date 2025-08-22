@@ -82,7 +82,17 @@ const ContactSection = () => {
       if (response.ok && result.success) {
         console.log('✅ SUCCESS: Contact form submitted successfully');
         console.log('Email should be sent to info@skybrain.in');
-        console.log('Data should be logged to Google Sheets');
+        console.log('Data should be logged to Google Sheets ( we need to clealy log for google sheets to know where we go wrong');
+        console.log('📊 WHAT SHOULD BE LOGGED TO GOOGLE SHEETS:');
+        console.log('- Form Type: contact');
+        console.log('- First Name:', formData.firstName);
+        console.log('- Last Name:', formData.lastName);
+        console.log('- Email:', formData.email);
+        console.log('- Interest Area:', formData.interestArea);
+        console.log('- Message:', formData.message.substring(0, 50) + '...');
+        console.log('- Timestamp: Will be generated server-side');
+        console.log('- Source: Contact Form');
+        console.log('🔍 CHECK SERVER LOGS for Google Sheets webhook status!');
         
         setSubmitStatus('success');
         setSubmitMessage(result.message);

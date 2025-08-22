@@ -1426,24 +1426,46 @@ app.post('/api/contact', formLimiter, async (req, res) => {
     });
     
     // Run email sending and Google Sheets logging in background (don't wait)
+    console.log('=== CONTACT FORM BACKGROUND PROCESSING START ===');
+    console.log('Email:', data.email);
+    console.log('Admin Email:', process.env.ADMIN_EMAIL);
+    
     Promise.allSettled([
       googleSheetsService.addUserSubmission('contact', data),
       sendEmail(process.env.ADMIN_EMAIL, emailTemplates.contact, data),
       sendEmail(data.email, autoReplyTemplates.contact, data)
     ]).then(([sheetsResult, adminEmailResult, userEmailResult]) => {
-      // Log any failures but don't block the response
+      console.log('=== BACKGROUND PROCESSING RESULTS ===');
+      
+      // Log Google Sheets result
+      console.log('📊 GOOGLE SHEETS RESULT:');
       if (sheetsResult.status === 'rejected') {
-        console.error('Google Sheets logging failed:', sheetsResult.reason);
+        console.error('❌ Google Sheets logging FAILED:', sheetsResult.reason);
+      } else {
+        console.log('✅ Google Sheets logging SUCCESS:', JSON.stringify(sheetsResult.value, null, 2));
       }
+      
+      // Log Admin email result
+      console.log('📧 ADMIN EMAIL RESULT:');
       if (adminEmailResult.status === 'rejected') {
-        console.error('Admin email failed:', adminEmailResult.reason);
+        console.error('❌ Admin email FAILED:', adminEmailResult.reason);
+      } else {
+        console.log('✅ Admin email SUCCESS');
       }
+      
+      // Log User email result
+      console.log('📧 USER EMAIL RESULT:');
       if (userEmailResult.status === 'rejected') {
-        console.error('User email failed:', userEmailResult.reason);
+        console.error('❌ User email FAILED:', userEmailResult.reason);
+      } else {
+        console.log('✅ User email SUCCESS');
       }
-      console.log(`Contact form processed successfully for ${data.email}`);
+      
+      console.log(`✅ Contact form processed successfully for ${data.email}`);
+      console.log('=== CONTACT FORM BACKGROUND PROCESSING END ===');
     }).catch(error => {
-      console.error('Background processing error:', error);
+      console.error('❌ Background processing error:', error);
+      console.log('=== CONTACT FORM BACKGROUND PROCESSING END ===');
     });
     
   } catch (error) {
