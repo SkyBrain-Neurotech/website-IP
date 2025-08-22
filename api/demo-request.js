@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
 
     // Prepare demo request data for Google Sheets
     const demoData = {
-      formType: 'Demo_Requests',  // This will update the Demo_Requests sheet
+      formType: 'demo-request',  // Try demo-request to match other APIs
       timestamp: timestamp || new Date().toISOString(),
       name,
       email,
