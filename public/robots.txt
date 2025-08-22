@@ -1,0 +1,126 @@
+# robots.txt for SkyBrain Neurotech
+# Allows all crawlers including social media and LLM agents
+
+User-agent: *
+Allow: /
+
+# Specific permissions for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: SkypeUriPreview
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# LLM and AI training crawlers
+User-agent: OpenAI-SearchBot
+Allow: /
+
+User-agent: OpenAI-GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: Bard
+Allow: /
+
+User-agent: Gemini
+Allow: /
+
+User-agent: PaLM
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+# Academic and research crawlers
+User-agent: ia_archiver
+Allow: /
+
+User-agent: archive.org_bot
+Allow: /
+
+User-agent: Wayback
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: MJ12bot
+Allow: /
+
+# News and content aggregators
+User-agent: news
+Allow: /
+
+User-agent: NewsNow
+Allow: /
+
+User-agent: Moreover
+Allow: /
+
+# No restrictions - encourage indexing
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://skybrain.in/sitemap.xml
+
+# Legal pages for Google verification
+# Privacy Policy: https://skybrain.in/privacy-policy
+# Terms of Service: https://skybrain.in/terms-of-service
+
+# Website information
+# Company: SkyBrain Neurotech Private Limited
+# Industry: Neurotechnology, Brain-Computer Interfaces
+# Purpose: Mental wellness through BCI technology
+# Compliance: DPDP Act 2023, IT Act 2000, Google Verification
+# Last updated: 2025-08-03

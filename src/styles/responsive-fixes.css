@@ -1,0 +1,200 @@
+/* Responsive fixes for perfect alignment across all devices */
+
+/* Hide reCAPTCHA v3 badge - it's invisible reCAPTCHA */
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Tablet-specific optimizations (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Footer adjustments for tablet */
+  footer .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  footer .lg\\:col-span-2 {
+    grid-column: span 2;
+    margin-bottom: 2rem;
+  }
+  
+  /* Contact form adjustments */
+  .contact-section .grid {
+    gap: 1.5rem;
+  }
+  
+  /* Navigation improvements */
+  nav .hidden.md\\:flex {
+    gap: 1.5rem;
+  }
+  
+  /* Video grid optimization */
+  .videos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile-specific fixes (up to 767px) */
+@media (max-width: 767px) {
+  /* Footer mobile optimization */
+  footer .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  /* Contact form mobile spacing */
+  .contact-form .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  /* Button consistency */
+  .cyber-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  /* Video thumbnails */
+  .video-thumbnail {
+    aspect-ratio: 16/9;
+  }
+  
+  /* Text size improvements */
+  .text-xs {
+    font-size: 0.875rem !important; /* 14px instead of 12px */
+  }
+  
+  /* Touch target improvements */
+  button, .btn, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Mobile typography scaling */
+  h1 {
+    font-size: clamp(2rem, 8vw, 4rem) !important;
+  }
+  
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+  }
+  
+  h3 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem) !important;
+  }
+}
+
+/* Desktop optimization (1025px+) */
+@media (min-width: 1025px) {
+  /* Footer desktop spacing */
+  footer .lg\\:col-span-2 {
+    padding-right: 2rem;
+  }
+  
+  /* Contact section alignment */
+  .contact-section .lg\\:grid-cols-2 {
+    align-items: start;
+  }
+  
+  /* Navigation spacing */
+  nav .space-x-8 > * + * {
+    margin-left: 2rem;
+  }
+}
+
+/* Animation sync fixes */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* YouTube subscribe button fix */
+.youtube-subscribe {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Glass button consistent styling */
+.glass-button {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  border-color: rgba(0, 212, 255, 0.6);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+/* Perfect centering for all devices */
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Responsive text scaling */
+@media (max-width: 640px) {
+  .text-responsive {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+  }
+  
+  .title-responsive {
+    font-size: clamp(2rem, 8vw, 4rem);
+  }
+}
+
+/* Grid gap consistency */
+.responsive-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .responsive-grid {
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    gap: 2.5rem;
+  }
+}
+
+/* Mobile menu fixes */
+@media (max-width: 767px) {
+  /* Prevent body scroll when mobile menu is open */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+  
+  /* Touch targets for better mobile interaction */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Improve button tap area */
+  nav button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}

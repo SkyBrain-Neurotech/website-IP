@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(timeout 10s npm run dev)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(npx tsc:*)",
+      "Bash(timeout 10 npm run dev)",
+      "Bash(node:*)",
+      "Bash(grep:*)",
+      "Bash(npm --version)",
+      "Bash(timeout 15 npm run build)",
+      "Bash(npm cache clean:*)",
+      "Bash(npx vite:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run dev:*)",
+      "Bash(true)",
+      "Bash(rg:*)",
+      "WebFetch(domain:skybrain.in)",
+      "Bash(mkdir:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(cp:*)",
+      "Bash(timeout 10s npm run preview)"
+    ],
+    "deny": []
+  }
+}

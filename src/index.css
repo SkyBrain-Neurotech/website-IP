@@ -1,0 +1,607 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap');
+@import './styles/responsive-fixes.css';
+@import './styles/synchronized-animations.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SkyBrain Design System - Enhanced with Animations and Holographic Effects */
+
+@layer base {
+  :root {
+    /* Unified BCI Color Palette */
+    --neural-blue: #00D4FF;
+    --deep-space: #0A0A23;
+    --mind-purple: #6B46FF;
+    --ghost-white: #F8F8FF;
+    --neural-gray: #8892B0;
+    --shadow-black: #1E1E3F;
+
+    /* Tailwind CSS Variables */
+    --background: 10 36% 7%;
+    --foreground: 240 100% 99%;
+    --card: 240 19% 12%;
+    --card-foreground: 240 100% 99%;
+    --popover: 240 19% 12%;
+    --popover-foreground: 240 100% 99%;
+    --primary: 215 28% 42%;
+    --primary-foreground: 10 36% 7%;
+    --secondary: 215 25% 56%;
+    --secondary-foreground: 240 100% 99%;
+    --muted: 214 32% 56%;
+    --muted-foreground: 240 100% 99%;
+    --accent: 215 28% 42%;
+    --accent-foreground: 10 36% 7%;
+    --destructive: 215 25% 56%;
+    --destructive-foreground: 240 100% 99%;
+    --border: 214 32% 56%;
+    --input: 240 19% 12%;
+    --ring: 215 28% 42%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, #0A0A23 0%, #181837 50%, #0A0A23 100%);
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Enhanced Neural Network Background */
+  .neural-network-bg {
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(107, 70, 255, 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+    animation: neuralShift 20s ease-in-out infinite;
+  }
+
+  /* Enhanced Neural Grid */
+  .neural-grid {
+    background-image: 
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridPulse 15s ease-in-out infinite;
+  }
+
+  /* Typography Consistency */
+  h1, h2, h3 {
+    font-family: 'Orbitron', monospace;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* Responsive Typography */
+  @media (max-width: 768px) {
+    body { font-size: 0.9rem; }
+  }
+}
+
+@layer components {
+  /* Enhanced Glass Card */
+  .glass-card {
+    background: rgba(248, 248, 255, 0.02);
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    border-radius: 16px;
+    backdrop-filter: blur(25px);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(0, 212, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+    transition: left 0.6s;
+  }
+
+  .glass-card:hover {
+    border-color: rgba(0, 212, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 
+      0 16px 48px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(0, 212, 255, 0.15);
+  }
+
+  .glass-card:hover::before {
+    left: 100%;
+  }
+
+  /* Enhanced Feature Card */
+  .feature-card {
+    background: rgba(0, 212, 255, 0.03);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+    transform: scaleX(0);
+    transition: transform 0.6s ease;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(0, 212, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 212, 255, 0.1);
+  }
+
+  .feature-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Enhanced Glow Effects */
+  .neural-glow {
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    animation: glowBreathe 4s infinite alternate;
+  }
+
+  .neural-pulse {
+    animation: neuralPulse 2s infinite;
+  }
+
+  /* Enhanced Fade Animation */
+  .fade-in-up {
+    animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Enhanced Gradient */
+  .neural-gradient {
+    background: linear-gradient(135deg, #00D4FF 0%, #6B46FF 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+  }
+
+  /* Elegant Neural Constellation */
+  .neural-constellation {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .constellation-node {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 212, 255, 0.2) 70%, transparent 100%);
+    border-radius: 50%;
+    animation: gentlePulse 4s ease-in-out infinite;
+  }
+
+  .constellation-node::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 7px;
+    height: 7px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: gentleGlow 6s ease-in-out infinite alternate;
+  }
+
+  .constellation-connection {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+    transform-origin: left center;
+    animation: connectionFlow 8s ease-in-out infinite;
+  }
+
+  /* Flowing Neural Paths */
+  .neural-path {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: pathDraw 6s ease-in-out infinite;
+  }
+
+}
+
+/* Enhanced Animations */
+@keyframes neuralPulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+@keyframes glowBreathe {
+  0%, 100% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+  50% { text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(60px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes neuralShift {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.15; }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes gentleGlow {
+  0% { opacity: 0.1; transform: scale(1); }
+  100% { opacity: 0.3; transform: scale(1.3); }
+}
+
+@keyframes connectionFlow {
+  0%, 100% { 
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+    opacity: 0.3;
+  }
+  50% { 
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.4), transparent);
+    opacity: 0.7;
+  }
+}
+
+@keyframes pathDraw {
+  0% { stroke-dashoffset: 100; opacity: 0; }
+  50% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Interactive Animations */
+@keyframes signalPulse {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+@keyframes brainWave {
+  0%, 100% { transform: translateX(0) scaleY(1); }
+  25% { transform: translateX(10px) scaleY(1.2); }
+  50% { transform: translateX(0) scaleY(0.8); }
+  75% { transform: translateX(-10px) scaleY(1.1); }
+}
+
+/* Holographic Text Effects */
+@keyframes holographicFlicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.95; filter: brightness(1.1); }
+  75% { opacity: 0.98; filter: brightness(1.05); }
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100vw); }
+}
+
+@keyframes glitchLine {
+  0% { transform: translateX(0) scaleX(1); opacity: 0.8; }
+  50% { transform: translateX(5px) scaleX(1.2); opacity: 1; }
+  100% { transform: translateX(-3px) scaleX(0.8); opacity: 0.6; }
+}
+
+/* Particle Field Effects */
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(120deg); }
+  66% { transform: translateY(5px) rotate(240deg); }
+}
+
+@keyframes energyWave {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.floating {
+  animation: float 12s ease-in-out infinite;
+}
+
+.signal-pulse {
+  animation: signalPulse 2s ease-out infinite;
+}
+
+.brain-wave {
+  animation: brainWave 4s ease-in-out infinite;
+}
+
+/* Cyber Button */
+.cyber-button {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(107, 70, 255, 0.1) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  color: #00D4FF;
+  font-family: 'Orbitron', monospace;
+  font-weight: 600;
+  padding: 12px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cyber-button:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  color: #F8F8FF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+/* Unified Page Background */
+.page-background {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #0A0A23 0%, #1E1E3F 50%, #0A0A23 100%);
+  z-index: -3;
+}
+
+.unified-neural-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.4;
+}
+
+.unified-neural-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+  /* Enhanced BCI Holographic Effects */
+  .holographic {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(107, 70, 255, 0.1) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .holographic::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.4), transparent, rgba(107, 70, 255, 0.4), transparent);
+    z-index: -1;
+    border-radius: inherit;
+    animation: hologramScan 3s linear infinite;
+  }
+
+  .holographic::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+    animation: holoShine 2s ease-in-out infinite;
+  }
+
+  /* Neural Connection Lines */
+  .neural-connection {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .neural-connection::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.6), transparent);
+    animation: neuralFlow 2s ease-in-out infinite;
+  }
+
+  /* Brain Wave Pattern */
+  .brain-wave-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 80% 80%, rgba(107, 70, 255, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 40% 70%, rgba(0, 212, 255, 0.05) 0%, transparent 20%);
+    animation: brainWaveShift 8s ease-in-out infinite;
+  }
+
+  /* Circuit Board Pattern */
+  .circuit-pattern {
+    background-image: 
+      linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(45deg, rgba(107, 70, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 20px 20px;
+    animation: circuitPulse 4s ease-in-out infinite;
+  }
+
+  /* Data Stream Effect */
+  .data-stream {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .data-stream::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 10px,
+      rgba(0, 212, 255, 0.1) 11px,
+      rgba(0, 212, 255, 0.1) 12px
+    );
+    animation: dataFlow 1.5s linear infinite;
+  }
+
+/* Enhanced Animations */
+@keyframes hologramScan {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes holoShine {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+@keyframes neuralFlow {
+  0%, 100% { 
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+    transform: translateX(-100%);
+  }
+  50% { 
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.8), transparent);
+    transform: translateX(100%);
+  }
+}
+
+@keyframes brainWaveShift {
+  0%, 100% { 
+    background-position: 0% 0%, 100% 100%, 50% 50%;
+    opacity: 0.5;
+  }
+  33% { 
+    background-position: 33% 33%, 67% 67%, 25% 75%;
+    opacity: 0.8;
+  }
+  66% { 
+    background-position: 67% 67%, 33% 33%, 75% 25%;
+    opacity: 0.6;
+  }
+}
+
+@keyframes circuitPulse {
+  0%, 100% { 
+    opacity: 0.3;
+    background-size: 40px 40px, 40px 40px, 20px 20px;
+  }
+  50% { 
+    opacity: 0.7;
+    background-size: 45px 45px, 45px 45px, 25px 25px;
+  }
+}
+
+@keyframes dataFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Accessibility & Performance */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .glass-card {
+    border: 2px solid #00D4FF;
+    background: rgba(0, 0, 0, 0.9);
+  }
+  
+  .neural-glow {
+    text-shadow: none;
+    font-weight: 700;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}

@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyBrain - Advanced Brain-Computer Interface Technology</title>
+    <meta name="description" content="Revolutionary BCI technology for brain monitoring, neural signal processing, and cognitive optimization. Track and enhance your mental performance with cutting-edge brain-computer interfaces." />
+    <meta name="author" content="SkyBrain" />
+
+    <meta property="og:title" content="SkyBrain - Advanced Brain-Computer Interface Technology" />
+    <meta property="og:description" content="Revolutionary BCI technology for brain monitoring, neural signal processing, and cognitive optimization." />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@skybrain" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LC1G6QP91G', {
+        page_title: 'SkyBrain Neurotechnology',
+        custom_map: {'custom_parameter_1': 'demo_interest'}
+      });
+      
+      // Track demo button clicks
+      function trackDemoClick(source) {
+        gtag('event', 'demo_click', {
+          'event_category': 'engagement',
+          'event_label': source,
+          'value': 1
+        });
+      }
+      
+      // Track form submissions
+      function trackFormSubmission(form_name) {
+        gtag('event', 'form_submit', {
+          'event_category': 'conversion',
+          'event_label': form_name,
+          'value': 1
+        });
+      }
+    </script>
+    
+    <!-- reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></script>
+    <script>
+      // reCAPTCHA v3 verification function
+      function executeRecaptcha(action) {
+        return new Promise((resolve) => {
+          grecaptcha.ready(function() {
+            grecaptcha.execute('6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', {action: action}).then(function(token) {
+              resolve(token);
+            });
+          });
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Hidden form for Netlify Forms detection -->
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="email" name="email" />
+      <input type="text" name="interestArea" />
+      <textarea name="message"></textarea>
+      <input type="text" name="timestamp" />
+      <input type="text" name="source" />
+    </form>
+
+    <div id="root"></div>
+    <!-- Mock API for development -->
+    <script src="/api-mock.js"></script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

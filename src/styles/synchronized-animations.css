@@ -1,0 +1,192 @@
+/* Synchronized Animations for Relaxing Fidget Effect */
+
+/* Global animation timing - all elements sync to these durations */
+:root {
+  --sync-duration-fast: 2s;    /* Fast spinning elements */
+  --sync-duration-medium: 3s;  /* Medium pulse elements */
+  --sync-duration-slow: 4s;    /* Slow breathing elements */
+  --sync-delay-1: 0s;         /* No delay */
+  --sync-delay-2: 0.5s;       /* Quarter offset */
+  --sync-delay-3: 1s;         /* Half offset */
+  --sync-delay-4: 1.5s;       /* Three-quarter offset */
+}
+
+/* Synchronized Spinning Animation */
+@keyframes syncedSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Synchronized Pulse Animation */
+@keyframes syncedPulse {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.1); 
+  }
+}
+
+/* Synchronized Gentle Rotation */
+@keyframes syncedRotate {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(3deg) scale(1.02); }
+  50% { transform: rotate(0deg) scale(1.05); }
+  75% { transform: rotate(-3deg) scale(1.02); }
+}
+
+/* Synchronized Floating */
+@keyframes syncedFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  33% { 
+    transform: translateY(-8px) rotate(2deg); 
+  }
+  66% { 
+    transform: translateY(4px) rotate(-1deg); 
+  }
+}
+
+/* Synchronized Breathing Effect */
+@keyframes syncedBreathe {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.7; 
+  }
+  50% { 
+    transform: scale(1.03); 
+    opacity: 1; 
+  }
+}
+
+/* Apply synchronized animations to specific elements */
+
+/* Navigation Brain Icon */
+.nav-brain-sync {
+  animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite var(--sync-delay-1);
+}
+
+/* Footer Brain Icon */
+.footer-brain-sync {
+  animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite var(--sync-delay-2);
+}
+
+/* Demo Modal Brain Icons */
+.demo-brain-sync {
+  animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite var(--sync-delay-3);
+}
+
+/* Contact Section Brain Icon - Synchronized with other brain icons */
+.contact-brain-sync {
+  animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite var(--sync-delay-4);
+}
+
+/* Spinning Elements (Loader, etc.) */
+.synced-spinner {
+  animation: syncedSpin var(--sync-duration-fast) linear infinite;
+}
+
+/* Roadmap Orbiting Elements */
+.roadmap-orbital-sync {
+  animation: syncedSpin var(--sync-duration-slow) linear infinite;
+}
+
+/* Hero Section Elements */
+.hero-element-sync {
+  animation: syncedBreathe var(--sync-duration-slow) ease-in-out infinite var(--sync-delay-1);
+}
+
+/* Gentle Hover Rotations - Synchronized */
+.synced-hover-rotate {
+  transition: transform 0.3s ease;
+}
+
+.synced-hover-rotate:hover {
+  transform: rotate(12deg) scale(1.05);
+}
+
+/* Page-specific synchronization */
+
+/* Home Page Sync Group */
+.home-sync-group {
+  animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite;
+}
+
+.home-sync-group:nth-child(2n) {
+  animation-delay: var(--sync-delay-2);
+}
+
+.home-sync-group:nth-child(3n) {
+  animation-delay: var(--sync-delay-3);
+}
+
+.home-sync-group:nth-child(4n) {
+  animation-delay: var(--sync-delay-4);
+}
+
+/* Contact Page Sync Group */
+.contact-sync-group {
+  animation: syncedFloat var(--sync-duration-slow) ease-in-out infinite;
+}
+
+.contact-sync-group:nth-child(2n) {
+  animation-delay: var(--sync-delay-2);
+}
+
+.contact-sync-group:nth-child(3n) {
+  animation-delay: var(--sync-delay-3);
+}
+
+/* Fidget-friendly synchronized wave effect */
+@keyframes syncedWave {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  25% { transform: translateY(-4px) scale(1.01); }
+  50% { transform: translateY(0px) scale(1.02); }
+  75% { transform: translateY(4px) scale(1.01); }
+}
+
+.wave-sync {
+  animation: syncedWave var(--sync-duration-medium) ease-in-out infinite;
+}
+
+.wave-sync-delayed {
+  animation: syncedWave var(--sync-duration-medium) ease-in-out infinite var(--sync-delay-2);
+}
+
+/* Override existing neural-pulse with synchronized version */
+.neural-pulse {
+  animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite !important;
+}
+
+/* Ensure Loader2 spin is synchronized */
+.animate-spin {
+  animation: syncedSpin var(--sync-duration-fast) linear infinite !important;
+}
+
+/* Roadmap orbital elements synchronized */
+@keyframes syncedOrbital {
+  0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+}
+
+.orbital-sync {
+  animation: syncedOrbital var(--sync-duration-slow) linear infinite;
+}
+
+/* Staggered delays for multiple elements on same page */
+.sync-stagger-1 { animation-delay: var(--sync-delay-1); }
+.sync-stagger-2 { animation-delay: var(--sync-delay-2); }
+.sync-stagger-3 { animation-delay: var(--sync-delay-3); }
+.sync-stagger-4 { animation-delay: var(--sync-delay-4); }
+
+/* Relaxing breathing effect for groups */
+.group-breathe {
+  animation: syncedBreathe var(--sync-duration-slow) ease-in-out infinite;
+}
+
+.group-breathe-delayed {
+  animation: syncedBreathe var(--sync-duration-slow) ease-in-out infinite var(--sync-delay-3);
+}

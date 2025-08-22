@@ -1,0 +1,3 @@
+@echo off
+echo Building SkyBrain for Production...
+wsl -d Ubuntu -e bash -c "cd '/mnt/c/Rakesh Work/SkyBrain Official/Cursor/claude code/mind-shift-frontier-web-main/SkyBrain Website' && npm run build"
