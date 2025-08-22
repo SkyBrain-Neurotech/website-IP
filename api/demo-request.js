@@ -17,24 +17,16 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    console.log('=== VERCEL DEMO REQUEST START ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
-
     // Check environment variables
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_APP_PASSWORD;
     const googleAppsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     
     if (!gmailUser || !gmailPassword) {
-      console.error('Missing Gmail credentials');
       return res.json({
         success: false,
         error: 'Missing Gmail credentials'
       });
-    }
-
-    if (!googleAppsScriptUrl) {
-      console.warn('Google Apps Script URL not configured - Google Sheets logging disabled');
     }
 
     // Validate form data
@@ -55,10 +47,6 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    console.log('Email:', email);
-    console.log('Interest:', interest);
-    console.log('Company:', company);
-
     // Create transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -72,7 +60,6 @@ module.exports = async function handler(req, res) {
 
     // Test connection
     await transporter.verify();
-    console.log('Email transporter verified');
 
     // Prepare demo request data for Google Sheets
     const demoData = {
@@ -161,8 +148,6 @@ module.exports = async function handler(req, res) {
 
     // Add Google Sheets logging if configured
     if (googleAppsScriptUrl) {
-      console.log('Adding Google Sheets logging for demo request');
-      
       const fetch = (await import('node-fetch')).default;
       
       promises.push(
@@ -176,10 +161,8 @@ module.exports = async function handler(req, res) {
           }
           return response.json();
         }).then(result => {
-          console.log('✅ Demo request logged to Google Sheets:', result);
           return { type: 'demo-sheets', success: true, result };
         }).catch(error => {
-          console.error('❌ Demo sheets error:', error);
           return { type: 'demo-sheets', success: false, error: error.message };
         })
       );
@@ -188,21 +171,10 @@ module.exports = async function handler(req, res) {
     // Execute all promises
     const results = await Promise.allSettled(promises);
     
-    console.log('=== VERCEL DEMO REQUEST RESULTS ===');
-    results.forEach((result, index) => {
-      const promiseType = index === 0 ? 'admin-email' : index === 1 ? 'user-email' : `promise-${index}`;
-      if (result.status === 'fulfilled') {
-        console.log(`✅ ${promiseType} SUCCESS:`, result.value);
-      } else {
-        console.error(`❌ ${promiseType} FAILED:`, result.reason);
-      }
-    });
-
     const emailResults = results.slice(0, 2);
     const failedEmails = emailResults.filter(result => result.status === 'rejected');
     
     if (failedEmails.length > 0) {
-      console.error('Email delivery failed');
       return res.json({
         success: false,
         error: 'Failed to send confirmation emails',
@@ -210,16 +182,12 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    console.log(`✅ Demo request processed successfully for ${email}`);
-    console.log('=== VERCEL DEMO REQUEST END ===');
-
     res.json({
       success: true,
       message: 'Demo request submitted! We\'ll contact you within 24 hours.'
     });
 
   } catch (error) {
-    console.error('❌ Vercel demo request error:', error);
     res.json({
       success: false,
       error: error.message,

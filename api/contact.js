@@ -17,24 +17,16 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    console.log('=== VERCEL CONTACT FORM START ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
-
     // Check environment variables
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_APP_PASSWORD;
     const googleAppsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     
     if (!gmailUser || !gmailPassword) {
-      console.error('Missing Gmail credentials');
       return res.json({
         success: false,
         error: 'Missing Gmail credentials'
       });
-    }
-
-    if (!googleAppsScriptUrl) {
-      console.warn('Google Apps Script URL not configured - Google Sheets logging disabled');
     }
 
     // Validate form data
@@ -46,9 +38,6 @@ module.exports = async function handler(req, res) {
         message: 'Missing required fields'
       });
     }
-
-    console.log('Email:', email);
-    console.log('Interest Area:', interestArea);
 
     // Create transporter
     const transporter = nodemailer.createTransport({
@@ -63,7 +52,6 @@ module.exports = async function handler(req, res) {
 
     // Test connection
     await transporter.verify();
-    console.log('Email transporter verified');
 
     // Prepare contact data
     const contactData = {
@@ -148,8 +136,6 @@ module.exports = async function handler(req, res) {
 
     // Add Google Sheets logging if configured
     if (googleAppsScriptUrl) {
-      console.log('Adding Google Sheets logging for contact form');
-      
       const fetch = (await import('node-fetch')).default;
       
       promises.push(
@@ -163,10 +149,8 @@ module.exports = async function handler(req, res) {
           }
           return response.json();
         }).then(result => {
-          console.log('✅ Contact form logged to Google Sheets:', result);
           return { type: 'contact-sheets', success: true, result };
         }).catch(error => {
-          console.error('❌ Contact sheets error:', error);
           return { type: 'contact-sheets', success: false, error: error.message };
         })
       );
@@ -175,21 +159,10 @@ module.exports = async function handler(req, res) {
     // Execute all promises
     const results = await Promise.allSettled(promises);
     
-    console.log('=== VERCEL CONTACT FORM RESULTS ===');
-    results.forEach((result, index) => {
-      const promiseType = index === 0 ? 'admin-email' : index === 1 ? 'user-email' : `promise-${index}`;
-      if (result.status === 'fulfilled') {
-        console.log(`✅ ${promiseType} SUCCESS:`, result.value);
-      } else {
-        console.error(`❌ ${promiseType} FAILED:`, result.reason);
-      }
-    });
-
     const emailResults = results.slice(0, 2);
     const failedEmails = emailResults.filter(result => result.status === 'rejected');
     
     if (failedEmails.length > 0) {
-      console.error('Email delivery failed');
       return res.json({
         success: false,
         error: 'Failed to send confirmation emails',
@@ -197,16 +170,12 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    console.log(`✅ Contact form processed successfully for ${email}`);
-    console.log('=== VERCEL CONTACT FORM END ===');
-
     res.json({
       success: true,
       message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
     });
 
   } catch (error) {
-    console.error('❌ Vercel contact form error:', error);
     res.json({
       success: false,
       error: error.message,

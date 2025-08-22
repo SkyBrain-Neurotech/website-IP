@@ -17,24 +17,16 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    console.log('=== VERCEL BETA SIGNUP START ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
-
     // Check environment variables
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_APP_PASSWORD;
     const googleAppsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
     
     if (!gmailUser || !gmailPassword) {
-      console.error('Missing Gmail credentials');
       return res.json({
         success: false,
         error: 'Missing Gmail credentials'
       });
-    }
-
-    if (!googleAppsScriptUrl) {
-      console.warn('Google Apps Script URL not configured - Google Sheets logging disabled');
     }
 
     // Validate form data
@@ -58,10 +50,6 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    console.log('Email:', email);
-    console.log('User Type:', userType);
-    console.log('Notifications enabled:', notifications);
-
     // Create transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -75,7 +63,6 @@ module.exports = async function handler(req, res) {
 
     // Test connection
     await transporter.verify();
-    console.log('Email transporter verified');
 
     // Prepare beta signup data
     const betaData = {
@@ -183,8 +170,6 @@ module.exports = async function handler(req, res) {
 
     // Add Google Sheets promises if configured
     if (googleAppsScriptUrl) {
-      console.log('Adding Google Sheets logging for beta signup');
-      
       const fetch = (await import('node-fetch')).default;
       
       // Add beta signup to Google Sheets
@@ -199,19 +184,14 @@ module.exports = async function handler(req, res) {
           }
           return response.json();
         }).then(result => {
-          console.log('✅ Beta signup logged to Google Sheets:', result);
           return { type: 'beta-sheets', success: true, result };
         }).catch(error => {
-          console.error('❌ Beta sheets error:', error);
           return { type: 'beta-sheets', success: false, error: error.message };
         })
       );
 
       // Add newsletter subscription if enabled
       if (newsletterData) {
-        console.log('🔔 Auto-subscribing to newsletter: "SkyBrain technology and beta releases updates"');
-        console.log('📋 Newsletter preferences:', newsletterData.preferences.join(', '));
-        
         promises.push(
           fetch(googleAppsScriptUrl, {
             method: 'POST',
@@ -223,10 +203,8 @@ module.exports = async function handler(req, res) {
             }
             return response.json();
           }).then(result => {
-            console.log('✅ Newsletter auto-subscription logged to Google Sheets:', result);
             return { type: 'newsletter-sheets', success: true, result };
           }).catch(error => {
-            console.error('❌ Newsletter sheets error:', error);
             return { type: 'newsletter-sheets', success: false, error: error.message };
           })
         );
@@ -236,21 +214,10 @@ module.exports = async function handler(req, res) {
     // Execute all promises
     const results = await Promise.allSettled(promises);
     
-    console.log('=== VERCEL BETA SIGNUP RESULTS ===');
-    results.forEach((result, index) => {
-      const promiseType = index === 0 ? 'admin-email' : index === 1 ? 'user-email' : `promise-${index}`;
-      if (result.status === 'fulfilled') {
-        console.log(`✅ ${promiseType} SUCCESS:`, result.value);
-      } else {
-        console.error(`❌ ${promiseType} FAILED:`, result.reason);
-      }
-    });
-
     const emailResults = results.slice(0, 2);
     const failedEmails = emailResults.filter(result => result.status === 'rejected');
     
     if (failedEmails.length > 0) {
-      console.error('Email delivery failed');
       return res.json({
         success: false,
         error: 'Failed to send confirmation emails',
@@ -258,19 +225,12 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    console.log(`✅ Beta signup processed successfully for ${email}`);
-    if (newsletterData) {
-      console.log(`✅ Newsletter auto-subscription processed for ${email}`);
-    }
-    console.log('=== VERCEL BETA SIGNUP END ===');
-
     res.json({
       success: true,
       message: 'Welcome to the beta program! Check your email for confirmation.'
     });
 
   } catch (error) {
-    console.error('❌ Vercel beta signup error:', error);
     res.json({
       success: false,
       error: error.message,
