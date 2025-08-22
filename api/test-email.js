@@ -1,5 +1,3 @@
-import * as nodemailer from 'nodemailer';
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -11,6 +9,9 @@ export default async function handler(req, res) {
 
   try {
     console.log('Testing Gmail SMTP connection...');
+    
+    // Dynamic import of nodemailer for Vercel compatibility
+    const nodemailer = await import('nodemailer');
     
     // Check environment variables
     const gmailUser = process.env.GMAIL_USER;
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
     }
 
     // Create transporter
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.default.createTransporter({
       service: 'gmail',
       auth: {
         user: gmailUser,
