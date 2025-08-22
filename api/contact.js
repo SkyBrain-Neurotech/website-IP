@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 // Google SMTP configuration
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.GMAIL_USER, // Your Gmail address
