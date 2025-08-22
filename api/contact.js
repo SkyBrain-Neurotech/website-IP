@@ -109,6 +109,30 @@ module.exports = async function handler(req, res) {
       `
     });
 
+    // Log to Google Sheets (non-blocking)
+    try {
+      const sheetsData = {
+        formType: 'contact',
+        firstName,
+        lastName,
+        email,
+        message,
+        interestArea: interestArea || '',
+        source: 'Website',
+        timestamp: new Date().toISOString()
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbyE-yOwMZ57AVujhm4I3ySGB5p3Ppco23j21szhjrQIi73TWza4h9RWcNPDAQQZCn0xpQ/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sheetsData)
+      }).catch(() => {
+        // Silently fail if Google Sheets logging fails - don't block email sending
+      });
+    } catch (error) {
+      // Silently fail - Google Sheets logging is optional
+    }
+
     res.json({
       success: true,
       message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
