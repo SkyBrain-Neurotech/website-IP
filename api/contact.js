@@ -111,7 +111,11 @@ module.exports = async function handler(req, res) {
 
     res.json({
       success: true,
-      message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
+      message: 'Message sent successfully! We\'ll get back to you within 24 hours.',
+      debug: {
+        timestamp: new Date().toISOString(),
+        emailsSent: 'Emails should be delivered to info@skybrain.in and user email'
+      }
     });
 
   } catch (error) {

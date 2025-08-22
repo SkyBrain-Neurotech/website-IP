@@ -61,7 +61,7 @@ module.exports = async function handler(req, res) {
     await transporter.verify();
 
     // Send admin notification email
-    await transporter.sendMail({
+    const adminInfo = await transporter.sendMail({
       from: `SkyBrain <${gmailUser}>`,
       to: 'info@skybrain.in',
       subject: `🎯 New Demo Request from ${name} - ${interest}`,
@@ -88,7 +88,7 @@ module.exports = async function handler(req, res) {
     });
 
     // Send auto-reply to user
-    await transporter.sendMail({
+    const userInfo = await transporter.sendMail({
       from: `SkyBrain <${gmailUser}>`,
       to: email,
       subject: 'Demo Request Confirmed - SkyBrain',
@@ -125,7 +125,11 @@ module.exports = async function handler(req, res) {
 
     res.json({
       success: true,
-      message: 'Demo request submitted! We\'ll contact you within 24 hours.'
+      message: 'Demo request submitted! We\'ll contact you within 24 hours.',
+      messageIds: {
+        admin: adminInfo.messageId,
+        user: userInfo.messageId
+      }
     });
 
   } catch (error) {
