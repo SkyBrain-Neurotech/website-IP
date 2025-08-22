@@ -115,7 +115,6 @@ module.exports = async function handler(req, res) {
     (async () => {
       try {
         const sheetsData = {
-          formType: 'beta-signup',
           firstName,
           lastName,
           email,
@@ -126,6 +125,7 @@ module.exports = async function handler(req, res) {
           timeline: '',
           useCase: '',
           notifications: false,
+          formType: 'beta-signup',
           timestamp: new Date().toISOString()
         };
 

@@ -114,10 +114,10 @@ module.exports = async function handler(req, res) {
     (async () => {
       try {
         const sheetsData = {
-          formType: 'newsletter',
           email,
           preferences: preferences || [],
           source: 'Social Media',
+          formType: 'newsletter',
           timestamp: new Date().toISOString()
         };
 

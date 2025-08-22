@@ -127,7 +127,6 @@ module.exports = async function handler(req, res) {
     (async () => {
       try {
         const sheetsData = {
-          formType: 'demo-request',
           name,
           email,
           phone: phone || '',
@@ -135,6 +134,7 @@ module.exports = async function handler(req, res) {
           interest,
           message: message || '',
           source: 'Conference',
+          formType: 'demo-request',
           timestamp: new Date().toISOString()
         };
 

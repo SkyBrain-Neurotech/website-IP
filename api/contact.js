@@ -113,13 +113,13 @@ module.exports = async function handler(req, res) {
     (async () => {
       try {
         const sheetsData = {
-          formType: 'contact',
           firstName,
           lastName,
           email,
           message,
           interestArea: interestArea || '',
           source: 'Website',
+          formType: 'contact',
           timestamp: new Date().toISOString()
         };
 
