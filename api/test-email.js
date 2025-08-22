@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       service: 'gmail',
       auth: {
         user: gmailUser,
-        pass: gmailPassword
+        pass: gmailPassword?.replace(/\s+/g, '') // Remove spaces from app password
       },
       secure: true,
       port: 465

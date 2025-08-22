@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer';
 
 // Google SMTP configuration
 const createTransporter = () => {
@@ -6,7 +6,7 @@ const createTransporter = () => {
     service: 'gmail',
     auth: {
       user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD
+      pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, '')
     },
     secure: true,
     port: 465
