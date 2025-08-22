@@ -15,16 +15,16 @@ const googleSheetsService = new GoogleSheetsWebhookService();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+  origin: [process.env.FRONTEND_URL || 'http://localhost:8080', 'http://localhost:8081'],
   methods: ['POST'],
   allowedHeaders: ['Content-Type']
 }));
 app.use(express.json({ limit: '1mb' }));
 
-// Rate limiting
+// Rate limiting - relaxed for development
 const formLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
+  max: process.env.NODE_ENV === 'development' ? 50 : 5, // Higher limit for dev
   message: {
     error: 'Too many form submissions, please try again later',
     retryAfter: '15 minutes'
@@ -1419,18 +1419,31 @@ app.post('/api/contact', formLimiter, async (req, res) => {
       source: 'Contact Form'
     };
     
-    // Log to Google Sheets
-    await googleSheetsService.addUserSubmission('contact', data);
-    
-    // Send notification email to admin
-    await sendEmail(process.env.ADMIN_EMAIL, emailTemplates.contact, data);
-    
-    // Send auto-reply to user
-    await sendEmail(data.email, autoReplyTemplates.contact, data);
-    
+    // Respond immediately to user
     res.json({
       success: true,
       message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
+    });
+    
+    // Run email sending and Google Sheets logging in background (don't wait)
+    Promise.allSettled([
+      googleSheetsService.addUserSubmission('contact', data),
+      sendEmail(process.env.ADMIN_EMAIL, emailTemplates.contact, data),
+      sendEmail(data.email, autoReplyTemplates.contact, data)
+    ]).then(([sheetsResult, adminEmailResult, userEmailResult]) => {
+      // Log any failures but don't block the response
+      if (sheetsResult.status === 'rejected') {
+        console.error('Google Sheets logging failed:', sheetsResult.reason);
+      }
+      if (adminEmailResult.status === 'rejected') {
+        console.error('Admin email failed:', adminEmailResult.reason);
+      }
+      if (userEmailResult.status === 'rejected') {
+        console.error('User email failed:', userEmailResult.reason);
+      }
+      console.log(`Contact form processed successfully for ${data.email}`);
+    }).catch(error => {
+      console.error('Background processing error:', error);
     });
     
   } catch (error) {
@@ -1460,18 +1473,21 @@ app.post('/api/beta-signup', formLimiter, async (req, res) => {
       timestamp: new Date().toISOString()
     };
     
-    // Log to Google Sheets
-    await googleSheetsService.addUserSubmission('beta-signup', data);
-    
-    // Send notification email to admin
-    await sendEmail(process.env.ADMIN_EMAIL, emailTemplates.betaSignup, data);
-    
-    // Send welcome email to user
-    await sendEmail(data.email, autoReplyTemplates.betaSignup, data);
-    
+    // Respond immediately to user
     res.json({
       success: true,
       message: 'Welcome to the beta program! Check your email for confirmation.'
+    });
+    
+    // Run background processing (don't wait)
+    Promise.allSettled([
+      googleSheetsService.addUserSubmission('beta-signup', data),
+      sendEmail(process.env.ADMIN_EMAIL, emailTemplates.betaSignup, data),
+      sendEmail(data.email, autoReplyTemplates.betaSignup, data)
+    ]).then(() => {
+      console.log(`Beta signup processed successfully for ${data.email}`);
+    }).catch(error => {
+      console.error('Beta signup background processing error:', error);
     });
     
   } catch (error) {
@@ -1502,18 +1518,21 @@ app.post('/api/demo-request', formLimiter, async (req, res) => {
       source: 'Demo Request Form'
     };
     
-    // Log to Google Sheets
-    await googleSheetsService.addUserSubmission('demo-request', data);
-    
-    // Send notification email to admin
-    await sendEmail(process.env.ADMIN_EMAIL, emailTemplates.demo, data);
-    
-    // Send confirmation email to user
-    await sendEmail(data.email, autoReplyTemplates.demo, data);
-    
+    // Respond immediately to user
     res.json({
       success: true,
       message: 'Demo request submitted! We\'ll contact you within 24 hours.'
+    });
+    
+    // Run background processing (don't wait)
+    Promise.allSettled([
+      googleSheetsService.addUserSubmission('demo-request', data),
+      sendEmail(process.env.ADMIN_EMAIL, emailTemplates.demo, data),
+      sendEmail(data.email, autoReplyTemplates.demo, data)
+    ]).then(() => {
+      console.log(`Demo request processed successfully for ${data.email}`);
+    }).catch(error => {
+      console.error('Demo request background processing error:', error);
     });
     
   } catch (error) {
@@ -1544,15 +1563,20 @@ app.post('/api/newsletter-subscribe', formLimiter, async (req, res) => {
       timestamp: new Date().toISOString()
     };
     
-    // Log to Google Sheets
-    await googleSheetsService.addUserSubmission('newsletter', data);
-    
-    // Send notification email to admin
-    await sendEmail(process.env.ADMIN_EMAIL, emailTemplates.newsletter, data);
-    
+    // Respond immediately to user
     res.json({
       success: true,
       message: 'Successfully subscribed to newsletter!'
+    });
+    
+    // Run background processing (don't wait)
+    Promise.allSettled([
+      googleSheetsService.addUserSubmission('newsletter', data),
+      sendEmail(process.env.ADMIN_EMAIL, emailTemplates.newsletter, data)
+    ]).then(() => {
+      console.log(`Newsletter subscription processed successfully for ${data.email}`);
+    }).catch(error => {
+      console.error('Newsletter background processing error:', error);
     });
     
   } catch (error) {

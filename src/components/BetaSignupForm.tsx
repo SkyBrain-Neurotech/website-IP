@@ -13,7 +13,7 @@ const getApiBaseUrl = () => {
       return ''; // Empty string for same domain
     }
     // Development
-    return 'http://localhost:3001';
+    return 'http://localhost:3005';
   }
   return 'http://localhost:3001';};
 

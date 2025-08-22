@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Form Submission</title>
+</head>
+<body>
+    <h1>Test Form Submission</h1>
+    <button onclick="testSubmission()">Test Contact Form</button>
+    <div id="result"></div>
+
+    <script>
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyE-yOwMZ57AVujhm4I3ySGB5p3Ppco23j21szhjrQIi73TWza4h9RWcNPDAQQZCn0xpQ/exec';
+        
+        async function testSubmission() {
+            const payload = {
+                formType: 'contact',
+                firstName: 'Test',
+                lastName: 'User',
+                email: 'test@example.com',
+                message: 'This is a test submission',
+                interestArea: 'Testing',
+                source: 'Test',
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('📤 Testing submission:', payload);
+            
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                console.log('📨 Response status:', response.status);
+                console.log('📨 Response ok:', response.ok);
+                
+                const result = await response.json();
+                console.log('📨 Response data:', result);
+                
+                document.getElementById('result').innerHTML = `
+                    <h2>Result:</h2>
+                    <p>Status: ${response.status}</p>
+                    <p>Success: ${result.success}</p>
+                    <p>Message: ${result.message || result.error}</p>
+                `;
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <h2>Error:</h2>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

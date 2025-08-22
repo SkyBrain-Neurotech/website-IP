@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { validateContactForm, trackFormSubmission } from '@/lib/formHandler';
 import { 
   Mail, 
@@ -38,6 +39,7 @@ const ContactSection = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
+  const [showDialog, setShowDialog] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -65,8 +67,12 @@ const ContactSection = () => {
     }
 
     try {
-      // Use our new Google Sheets API integration
-      const response = await fetch('/api/contact', {
+      // Use local Express server for development, Vercel API for production
+      const apiUrl = process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:3005/api/contact'
+        : '/api/contact';
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,6 +85,7 @@ const ContactSection = () => {
       if (response.ok && result.success) {
         setSubmitStatus('success');
         setSubmitMessage(result.message);
+        setShowDialog(true);
         trackFormSubmission('google_sheets_api', true);
         
         // Reset form
@@ -428,6 +435,34 @@ const ContactSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Success Confirmation Dialog */}
+      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+        <AlertDialogContent className="glass-card border-neural-blue/50 bg-gradient-to-br from-deep-space via-shadow-black to-deep-space max-w-md !fixed !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2 !z-50 !pointer-events-auto">
+          <AlertDialogHeader>
+            <div className="flex items-center justify-center mb-4">
+              <div className="relative">
+                <CheckCircle2 className="h-16 w-16 text-neural-blue animate-pulse" />
+                <div className="absolute inset-0 h-16 w-16 bg-neural-blue/20 rounded-full blur-xl"></div>
+              </div>
+            </div>
+            <AlertDialogTitle className="text-center text-2xl font-bold text-ghost-white font-orbitron">
+              Message Sent Successfully!
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center text-neural-gray text-lg">
+              Thank you for reaching out! We've received your message and will get back to you within 24 hours.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex justify-center">
+            <AlertDialogAction 
+              className="cyber-button text-primary-foreground font-bold px-8 py-3 rounded-xl"
+              onClick={() => setShowDialog(false)}
+            >
+              Okay
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };
