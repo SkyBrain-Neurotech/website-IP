@@ -119,7 +119,7 @@ module.exports = async function handler(req, res) {
           email,
           message,
           interestArea: interestArea || '',
-          source: 'Contact Form',
+          source: 'Website',
           timestamp: new Date().toISOString()
         };
 

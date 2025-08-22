@@ -134,7 +134,7 @@ module.exports = async function handler(req, res) {
           company: company || '',
           interest,
           message: message || '',
-          source: 'Contact Form',
+          source: 'Conference',
           timestamp: new Date().toISOString()
         };
 

@@ -117,7 +117,7 @@ module.exports = async function handler(req, res) {
           formType: 'newsletter',
           email,
           preferences: preferences || [],
-          source: 'Contact Form',
+          source: 'Social Media',
           timestamp: new Date().toISOString()
         };
 

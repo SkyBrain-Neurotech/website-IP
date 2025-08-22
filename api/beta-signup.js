@@ -126,7 +126,6 @@ module.exports = async function handler(req, res) {
           timeline: '',
           useCase: '',
           notifications: false,
-          source: 'Contact Form',
           timestamp: new Date().toISOString()
         };
 
