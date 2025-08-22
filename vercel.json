@@ -4,25 +4,5 @@
       "source": "/((?!api).*)",
       "destination": "/index.html"
     }
-  ],
-  "functions": {
-    "api/contact.js": {
-      "maxDuration": 30
-    },
-    "api/demo-request.js": {
-      "maxDuration": 30
-    },
-    "api/beta-signup.js": {
-      "maxDuration": 30
-    },
-    "api/newsletter-subscribe.js": {
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "GMAIL_USER": "@gmail_user",
-    "GMAIL_APP_PASSWORD": "@gmail_app_password",
-    "GOOGLE_APPS_SCRIPT_URL": "@google_apps_script_url",
-    "ADMIN_EMAIL": "@admin_email"
-  }
+  ]
 }
