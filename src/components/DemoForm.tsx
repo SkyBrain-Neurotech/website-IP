@@ -68,8 +68,14 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
       });
 
       const result = await response.json();
+      console.log('=== DEMO FORM RESPONSE DEBUG ===');
+      console.log('Response from API:', result);
 
       if (response.ok && result.success) {
+        console.log('✅ SUCCESS: Demo form submitted successfully');
+        console.log('Email should be sent to info@skybrain.in');
+        console.log('Data should be logged to Google Sheets');
+        
         // Track successful form submission
         if (typeof window !== 'undefined' && window.trackFormSubmission) {
           window.trackFormSubmission('demo_request');
@@ -92,6 +98,8 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
           onSuccess();
         }
       } else {
+        console.log('❌ ERROR: Demo form submission failed');
+        console.log('Error details:', result);
         throw new Error(result.message || 'Demo request failed');      }
 
     } catch (error) {

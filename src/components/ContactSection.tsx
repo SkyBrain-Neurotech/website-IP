@@ -76,8 +76,14 @@ const ContactSection = () => {
       });
 
       const result = await response.json();
+      console.log('=== CONTACT FORM RESPONSE DEBUG ===');
+      console.log('Response from API:', result);
       
       if (response.ok && result.success) {
+        console.log('✅ SUCCESS: Contact form submitted successfully');
+        console.log('Email should be sent to info@skybrain.in');
+        console.log('Data should be logged to Google Sheets');
+        
         setSubmitStatus('success');
         setSubmitMessage(result.message);
         setShowDialog(true);
@@ -92,6 +98,9 @@ const ContactSection = () => {
           message: ''
         });
       } else {
+        console.log('❌ ERROR: Contact form submission failed');
+        console.log('Error details:', result);
+        
         setSubmitStatus('error');
         setSubmitMessage(result.message || 'Form submission failed');
         trackFormSubmission('contact_form', false);
