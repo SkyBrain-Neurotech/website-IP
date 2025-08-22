@@ -87,8 +87,30 @@ const BetaSignupForm: React.FC<BetaSignupFormProps> = ({ userType, onBack }) => 
       });
 
       const result = await response.json();
+      console.log('=== BETA SIGNUP RESPONSE DEBUG ===');
+      console.log('Response from API:', result);
 
-      if (response.ok && result.success) {        setIsSubmitted(true);
+      if (response.ok && result.success) {
+        console.log('✅ SUCCESS: Beta signup submitted successfully');
+        console.log('Email should be sent to info@skybrain.in');
+        console.log('Data should be logged to Google Sheets');
+        console.log('📊 WHAT SHOULD BE LOGGED TO GOOGLE SHEETS:');
+        console.log('- Form Type: beta-signup');
+        console.log('- First Name:', formData.firstName);
+        console.log('- Last Name:', formData.lastName);
+        console.log('- Email:', formData.email);
+        console.log('- User Type:', userType);
+        console.log('- Company:', formData.company);
+        console.log('- Country:', formData.country);
+        console.log('- Interests:', formData.interests.join(', '));
+        console.log('- Timeline:', formData.timeline);
+        console.log('- Use Case:', formData.useCase.substring(0, 50) + '...');
+        console.log('- Notifications:', formData.notifications);
+        console.log('- Timestamp: Will be generated server-side');
+        console.log('- Source: website');
+        console.log('🔍 CHECK SERVER LOGS for Google Sheets webhook status!');
+        
+        setIsSubmitted(true);
         // Track conversion
         if (typeof gtag !== 'undefined') {
           gtag('event', 'beta_signup', {
@@ -97,10 +119,12 @@ const BetaSignupForm: React.FC<BetaSignupFormProps> = ({ userType, onBack }) => 
           });
         }
       } else {
+        console.log('❌ ERROR: Beta signup submission failed');
+        console.log('Error details:', result);
         throw new Error(result.message || 'Signup failed');
       }
     } catch (error) {
-      console.error('Beta signup error:', error);
+      console.error('❌ Beta signup error:', error);
       alert('Something went wrong. Please try again or contact us at info@skybrain.in');    } finally {
       setIsSubmitting(false);
     }

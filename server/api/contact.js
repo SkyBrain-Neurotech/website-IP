@@ -1502,14 +1502,47 @@ app.post('/api/beta-signup', formLimiter, async (req, res) => {
     });
     
     // Run background processing (don't wait)
+    console.log('=== BETA SIGNUP BACKGROUND PROCESSING START ===');
+    console.log('Email:', data.email);
+    console.log('User Type:', data.userType);
+    console.log('Admin Email:', process.env.ADMIN_EMAIL);
+    
     Promise.allSettled([
       googleSheetsService.addUserSubmission('beta-signup', data),
       sendEmail(process.env.ADMIN_EMAIL, emailTemplates.betaSignup, data),
       sendEmail(data.email, autoReplyTemplates.betaSignup, data)
-    ]).then(() => {
-      console.log(`Beta signup processed successfully for ${data.email}`);
+    ]).then(([sheetsResult, adminEmailResult, userEmailResult]) => {
+      console.log('=== BETA SIGNUP BACKGROUND PROCESSING RESULTS ===');
+      
+      // Log Google Sheets result
+      console.log('📊 GOOGLE SHEETS RESULT:');
+      if (sheetsResult.status === 'rejected') {
+        console.error('❌ Google Sheets logging FAILED:', sheetsResult.reason);
+      } else {
+        console.log('✅ Google Sheets logging SUCCESS:', JSON.stringify(sheetsResult.value, null, 2));
+      }
+      
+      // Log Admin email result
+      console.log('📧 ADMIN EMAIL RESULT:');
+      if (adminEmailResult.status === 'rejected') {
+        console.error('❌ Admin email FAILED:', adminEmailResult.reason);
+      } else {
+        console.log('✅ Admin email SUCCESS');
+      }
+      
+      // Log User email result
+      console.log('📧 USER EMAIL RESULT:');
+      if (userEmailResult.status === 'rejected') {
+        console.error('❌ User email FAILED:', userEmailResult.reason);
+      } else {
+        console.log('✅ User email SUCCESS');
+      }
+      
+      console.log(`✅ Beta signup processed successfully for ${data.email}`);
+      console.log('=== BETA SIGNUP BACKGROUND PROCESSING END ===');
     }).catch(error => {
-      console.error('Beta signup background processing error:', error);
+      console.error('❌ Beta signup background processing error:', error);
+      console.log('=== BETA SIGNUP BACKGROUND PROCESSING END ===');
     });
     
   } catch (error) {
@@ -1547,14 +1580,48 @@ app.post('/api/demo-request', formLimiter, async (req, res) => {
     });
     
     // Run background processing (don't wait)
+    console.log('=== DEMO REQUEST BACKGROUND PROCESSING START ===');
+    console.log('Name:', data.name);
+    console.log('Email:', data.email);
+    console.log('Interest:', data.interest);
+    console.log('Admin Email:', process.env.ADMIN_EMAIL);
+    
     Promise.allSettled([
       googleSheetsService.addUserSubmission('demo-request', data),
       sendEmail(process.env.ADMIN_EMAIL, emailTemplates.demo, data),
       sendEmail(data.email, autoReplyTemplates.demo, data)
-    ]).then(() => {
-      console.log(`Demo request processed successfully for ${data.email}`);
+    ]).then(([sheetsResult, adminEmailResult, userEmailResult]) => {
+      console.log('=== DEMO REQUEST BACKGROUND PROCESSING RESULTS ===');
+      
+      // Log Google Sheets result
+      console.log('📊 GOOGLE SHEETS RESULT:');
+      if (sheetsResult.status === 'rejected') {
+        console.error('❌ Google Sheets logging FAILED:', sheetsResult.reason);
+      } else {
+        console.log('✅ Google Sheets logging SUCCESS:', JSON.stringify(sheetsResult.value, null, 2));
+      }
+      
+      // Log Admin email result
+      console.log('📧 ADMIN EMAIL RESULT:');
+      if (adminEmailResult.status === 'rejected') {
+        console.error('❌ Admin email FAILED:', adminEmailResult.reason);
+      } else {
+        console.log('✅ Admin email SUCCESS');
+      }
+      
+      // Log User email result
+      console.log('📧 USER EMAIL RESULT:');
+      if (userEmailResult.status === 'rejected') {
+        console.error('❌ User email FAILED:', userEmailResult.reason);
+      } else {
+        console.log('✅ User email SUCCESS');
+      }
+      
+      console.log(`✅ Demo request processed successfully for ${data.email}`);
+      console.log('=== DEMO REQUEST BACKGROUND PROCESSING END ===');
     }).catch(error => {
-      console.error('Demo request background processing error:', error);
+      console.error('❌ Demo request background processing error:', error);
+      console.log('=== DEMO REQUEST BACKGROUND PROCESSING END ===');
     });
     
   } catch (error) {
@@ -1592,13 +1659,39 @@ app.post('/api/newsletter-subscribe', formLimiter, async (req, res) => {
     });
     
     // Run background processing (don't wait)
+    console.log('=== NEWSLETTER SIGNUP BACKGROUND PROCESSING START ===');
+    console.log('Email:', data.email);
+    console.log('Preferences:', data.preferences);
+    console.log('Source:', data.source);
+    console.log('Admin Email:', process.env.ADMIN_EMAIL);
+    
     Promise.allSettled([
       googleSheetsService.addUserSubmission('newsletter', data),
       sendEmail(process.env.ADMIN_EMAIL, emailTemplates.newsletter, data)
-    ]).then(() => {
-      console.log(`Newsletter subscription processed successfully for ${data.email}`);
+    ]).then(([sheetsResult, adminEmailResult]) => {
+      console.log('=== NEWSLETTER SIGNUP BACKGROUND PROCESSING RESULTS ===');
+      
+      // Log Google Sheets result
+      console.log('📊 GOOGLE SHEETS RESULT:');
+      if (sheetsResult.status === 'rejected') {
+        console.error('❌ Google Sheets logging FAILED:', sheetsResult.reason);
+      } else {
+        console.log('✅ Google Sheets logging SUCCESS:', JSON.stringify(sheetsResult.value, null, 2));
+      }
+      
+      // Log Admin email result
+      console.log('📧 ADMIN EMAIL RESULT:');
+      if (adminEmailResult.status === 'rejected') {
+        console.error('❌ Admin email FAILED:', adminEmailResult.reason);
+      } else {
+        console.log('✅ Admin email SUCCESS');
+      }
+      
+      console.log(`✅ Newsletter subscription processed successfully for ${data.email}`);
+      console.log('=== NEWSLETTER SIGNUP BACKGROUND PROCESSING END ===');
     }).catch(error => {
-      console.error('Newsletter background processing error:', error);
+      console.error('❌ Newsletter signup background processing error:', error);
+      console.log('=== NEWSLETTER SIGNUP BACKGROUND PROCESSING END ===');
     });
     
   } catch (error) {

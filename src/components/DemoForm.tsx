@@ -75,6 +75,17 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
         console.log('✅ SUCCESS: Demo form submitted successfully');
         console.log('Email should be sent to info@skybrain.in');
         console.log('Data should be logged to Google Sheets');
+        console.log('📊 WHAT SHOULD BE LOGGED TO GOOGLE SHEETS:');
+        console.log('- Form Type: demo-request');
+        console.log('- Name:', formData.name);
+        console.log('- Email:', formData.email);
+        console.log('- Phone:', formData.phone || 'Not provided');
+        console.log('- Company:', formData.company || 'Not specified');
+        console.log('- Interest:', formData.interest);
+        console.log('- Message:', formData.message.substring(0, 50) + '...' || 'None provided');
+        console.log('- Timestamp: Will be generated server-side');
+        console.log('- Source: website_demo_form');
+        console.log('🔍 CHECK SERVER LOGS for Google Sheets webhook status!');
         
         // Track successful form submission
         if (typeof window !== 'undefined' && window.trackFormSubmission) {

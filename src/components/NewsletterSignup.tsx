@@ -65,17 +65,33 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
       });
 
       const result = await response.json();
+      console.log('=== NEWSLETTER SIGNUP RESPONSE DEBUG ===');
+      console.log('Response from API:', result);
 
       if (response.ok && result.success) {
+        console.log('✅ SUCCESS: Newsletter signup submitted successfully');
+        console.log('Email should be sent to info@skybrain.in');
+        console.log('Data should be logged to Google Sheets');
+        console.log('📊 WHAT SHOULD BE LOGGED TO GOOGLE SHEETS:');
+        console.log('- Form Type: newsletter');
+        console.log('- Email:', email);
+        console.log('- Preferences:', preferences.join(', '));
+        console.log('- Source:', location);
+        console.log('- Timestamp: Will be generated server-side');
+        console.log('🔍 CHECK SERVER LOGS for Google Sheets webhook status!');
+        
         setIsSubmitted(true);
         trackFormSubmission('newsletter', true, { 
           preferences: preferences.join(','),
           source: location 
         });
       } else {
+        console.log('❌ ERROR: Newsletter signup submission failed');
+        console.log('Error details:', result);
         throw new Error(result.message || 'Subscription failed');
       }
     } catch (err) {
+      console.error('❌ Newsletter signup error:', err);
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again or contact us at info@skybrain.in');
       trackFormSubmission('newsletter', false, { 
         error: err instanceof Error ? err.message : 'unknown_error',
