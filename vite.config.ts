@@ -8,11 +8,11 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     proxy: {
-      // Proxy API requests to production Vercel deployment during development
+      // Proxy API requests to local development server during development
       '/api': {
-        target: 'https://www.skybrain.in',
+        target: 'http://localhost:3005',
         changeOrigin: true,
-        secure: true,
+        secure: false,
         configure: (proxy, options) => {
           proxy.on('error', (err, req, res) => {
             console.log('Proxy error:', err);
