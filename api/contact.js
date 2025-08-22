@@ -520,20 +520,31 @@ module.exports = async function handler(req, res) {
       source: 'Contact Form'
     };
     
-    // Respond immediately to user
-    res.json({
-      success: true,
-      message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
-    });
-    
-    // Run email sending and Google Sheets logging in background (don't wait)
-    Promise.allSettled([
-      sendEmail(process.env.ADMIN_EMAIL || 'info@skybrain.in', contactEmailTemplate, data),
-      sendEmail(data.email, autoReplyTemplate, data),
-      logToGoogleSheets(data)
-    ]).catch(error => {
-      console.error('Background processing error:', error);
-    });
+    // Send emails first, then respond
+    try {
+      await Promise.all([
+        sendEmail(process.env.ADMIN_EMAIL || 'info@skybrain.in', contactEmailTemplate, data),
+        sendEmail(data.email, autoReplyTemplate, data)
+      ]);
+      
+      // If emails succeeded, respond with success
+      res.json({
+        success: true,
+        message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
+      });
+      
+      // Log to Google Sheets in background (don't wait for this)
+      logToGoogleSheets(data).catch(error => {
+        console.error('Google Sheets logging failed:', error);
+      });
+      
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to send message. Please try again later or contact us directly at info@skybrain.in'
+      });
+    }
     
   } catch (error) {
     console.error('Contact form error:', error);
