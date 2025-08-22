@@ -1,181 +1,181 @@
-// Mock API endpoints for development
-// This will be replaced with real backend implementation
+// SkyBrain API endpoints - Direct Google Sheets Integration
+// Routes form submissions directly to Google Apps Script webhook
 
-// Simulate API responses with realistic delays
-const simulateDelay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
+// Google Apps Script webhook URL
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLD47XjgPop6hepE0oReUrePB4jrVw6rgKdmV_Sfhj05xOeH9j8PNxSLWePJw4yc34zQ/exec';
 
-// Mock database for storing signups (in production, use real database)
-let mockDatabase = {
-  betaSignups: [],
-  newsletterSubscriptions: [],
-  contactMessages: [],
-  demoRequests: [],
-  analytics: []
-};
-
-// Beta signup endpoint
-window.mockAPI = {
+window.skybrainAPI = {
   async betaSignup(data) {
-    await simulateDelay(1500);
-    
-    // Simulate validation
+    // Validate required fields
     if (!data.email || !data.firstName || !data.lastName) {
       throw new Error('Missing required fields');
     }
     
-    // Check for duplicate email
-    const existingSignup = mockDatabase.betaSignups.find(signup => signup.email === data.email);
-    if (existingSignup) {
-      throw new Error('Email already registered for beta program');
+    // Submit directly to Google Apps Script webhook
+    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formType: 'beta-signup',
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        userType: data.userType || 'Individual',
+        company: data.company || '',
+        country: data.country || '',
+        interests: data.interests || [],
+        timeline: data.timeline || '',
+        useCase: data.useCase || '',
+        notifications: data.notifications || false,
+        source: 'Website',
+        timestamp: new Date().toISOString()
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Beta signup failed');
     }
-    
-    // Store signup
-    const signup = {
-      id: Date.now(),
-      ...data,
-      createdAt: new Date().toISOString(),
-      status: 'pending_verification'
-    };
-    
-    mockDatabase.betaSignups.push(signup);
-    
-    console.log('Mock Beta Signup:', signup);
     
     return {
       success: true,
       message: 'Successfully registered for beta program',
-      id: signup.id
-    };
-  },
-
-  async newsletterSubscribe(data) {
-    await simulateDelay(1000);
-    
-    if (!data.email) {
-      throw new Error('Email is required');
-    }
-    
-    // Check for duplicate email
-    const existingSubscription = mockDatabase.newsletterSubscriptions.find(sub => sub.email === data.email);
-    if (existingSubscription) {
-      // Update preferences instead of creating new subscription
-      existingSubscription.preferences = data.preferences;
-      existingSubscription.updatedAt = new Date().toISOString();
-      
-      return {
-        success: true,
-        message: 'Newsletter preferences updated',
-        id: existingSubscription.id
-      };
-    }
-    
-    const subscription = {
-      id: Date.now(),
-      ...data,
-      createdAt: new Date().toISOString(),
-      status: 'active'
-    };
-    
-    mockDatabase.newsletterSubscriptions.push(subscription);
-    
-    console.log('Mock Newsletter Subscription:', subscription);
-    
-    return {
-      success: true,
-      message: 'Successfully subscribed to newsletter',
-      id: subscription.id
+      id: result.id || Date.now()
     };
   },
 
   async contact(data) {
-    await simulateDelay(1200);
+    // Validate required fields
+    const firstName = data.firstName || data.name?.split(' ')[0] || '';
+    const lastName = data.lastName || data.name?.split(' ').slice(1).join(' ') || '';
     
-    // Simulate validation
-    if (!data.name || !data.email || !data.message) {
+    if (!data.email || !data.message || !firstName) {
       throw new Error('Missing required fields: name, email, and message');
     }
     
-    // Store contact message
-    const message = {
-      id: Date.now(),
-      ...data,
-      createdAt: new Date().toISOString(),
-      status: 'new'
-    };
+    // Submit directly to Google Apps Script webhook
+    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formType: 'contact',
+        firstName,
+        lastName,
+        email: data.email,
+        message: data.message,
+        interestArea: data.interestArea || '',
+        source: 'Website',
+        country: data.country || '',
+        timestamp: new Date().toISOString()
+      })
+    });
     
-    mockDatabase.contactMessages.push(message);
+    const result = await response.json();
     
-    console.log('Mock Contact Message:', message);
+    if (!response.ok) {
+      throw new Error(result.message || 'Message submission failed');
+    }
     
     return {
       success: true,
       message: 'Thank you for your message. We will get back to you soon!',
-      id: message.id
+      id: result.id || Date.now()
     };
   },
 
   async demoRequest(data) {
-    await simulateDelay(1500);
+    // Validate required fields  
+    const firstName = data.firstName || data.name?.split(' ')[0] || '';
+    const lastName = data.lastName || data.name?.split(' ').slice(1).join(' ') || '';
+    const fullName = data.name || `${firstName} ${lastName}`.trim();
     
-    // Simulate validation
-    if (!data.name || !data.email || !data.company) {
-      throw new Error('Missing required fields: name, email, and company');
+    if (!data.email || !fullName) {
+      throw new Error('Missing required fields: name and email');
     }
     
-    // Store demo request
-    const request = {
-      id: Date.now(),
-      ...data,
-      createdAt: new Date().toISOString(),
-      status: 'pending_review'
-    };
+    // Submit directly to Google Apps Script webhook
+    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formType: 'demo-request',
+        name: fullName,
+        email: data.email,
+        phone: data.phone || '',
+        company: data.company || '',
+        interest: data.interest || '',
+        message: data.message || '',
+        source: 'Website',
+        timestamp: new Date().toISOString()
+      })
+    });
     
-    mockDatabase.demoRequests.push(request);
+    const result = await response.json();
     
-    console.log('Mock Demo Request:', request);
+    if (!response.ok) {
+      throw new Error(result.message || 'Demo request failed');
+    }
     
     return {
       success: true,
       message: 'Demo request submitted successfully. We will contact you within 24 hours!',
-      id: request.id
+      id: result.id || Date.now()
+    };
+  },
+
+  async newsletterSubscribe(data) {
+    if (!data.email) {
+      throw new Error('Email is required');
+    }
+    
+    // Submit directly to Google Apps Script webhook
+    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formType: 'newsletter',
+        email: data.email,
+        preferences: data.preferences || [],
+        source: 'Website',
+        timestamp: new Date().toISOString()
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Newsletter subscription failed');
+    }
+    
+    return {
+      success: true,
+      message: 'Successfully subscribed to newsletter',
+      id: result.id || Date.now()
     };
   },
 
   async trackAnalytics(data) {
-    // No delay for analytics to avoid affecting user experience
-    const event = {
-      id: Date.now(),
-      ...data,
-      createdAt: new Date().toISOString()
-    };
-    
-    mockDatabase.analytics.push(event);
-    
-    // Only log in development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      console.log('Mock Analytics Event:', event);
+    // Optional analytics tracking - non-blocking
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'analytics',
+          ...data,
+          timestamp: new Date().toISOString()
+        })
+      });
+    } catch (error) {
+      // Silently fail for analytics
     }
     
     return { success: true };
-  },
-
-  // Get current mock data (for debugging)
-  getDebugData() {
-    return {
-      betaSignups: mockDatabase.betaSignups.length,
-      newsletters: mockDatabase.newsletterSubscriptions.length,
-      contactMessages: mockDatabase.contactMessages.length,
-      demoRequests: mockDatabase.demoRequests.length,
-      analyticsEvents: mockDatabase.analytics.length,
-      recentSignups: mockDatabase.betaSignups.slice(-5),
-      recentContacts: mockDatabase.contactMessages.slice(-5),
-      recentDemos: mockDatabase.demoRequests.slice(-5),
-      recentAnalytics: mockDatabase.analytics.slice(-10)
-    };
   }
 };
 
-// Intercept fetch requests to mock APIs
+// Intercept fetch requests to redirect to proper backend
 const originalFetch = window.fetch;
 window.fetch = async function(url, options) {
   // Only intercept our API calls
@@ -187,22 +187,22 @@ window.fetch = async function(url, options) {
       let result;
       switch (endpoint) {
         case 'beta-signup':
-          result = await window.mockAPI.betaSignup(data);
+          result = await window.skybrainAPI.betaSignup(data);
           break;
         case 'newsletter-subscribe':
-          result = await window.mockAPI.newsletterSubscribe(data);
+          result = await window.skybrainAPI.newsletterSubscribe(data);
           break;
         case 'contact':
-          result = await window.mockAPI.contact(data);
+          result = await window.skybrainAPI.contact(data);
           break;
         case 'demo-request':
-          result = await window.mockAPI.demoRequest(data);
+          result = await window.skybrainAPI.demoRequest(data);
           break;
         case 'analytics/track':
-          result = await window.mockAPI.trackAnalytics(data);
+          result = await window.skybrainAPI.trackAnalytics(data);
           break;
         default:
-          throw new Error(`Mock API endpoint not found: ${endpoint}`);
+          throw new Error(`API endpoint not found: ${endpoint}`);
       }
       
       return new Response(JSON.stringify(result), {
@@ -224,5 +224,4 @@ window.fetch = async function(url, options) {
   return originalFetch.apply(this, arguments);
 };
 
-console.log('🧠 SkyBrain Mock API initialized');
-console.log('📊 Access debug data with: window.mockAPI.getDebugData()');
+console.log('🧠 SkyBrain API initialized - Google Sheets integration active');
