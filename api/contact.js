@@ -109,33 +109,29 @@ module.exports = async function handler(req, res) {
       `
     });
 
-    // Log to Google Sheets - EXACT payload from working test
-    (async () => {
-      try {
-        const fetch = (await import('node-fetch')).default;
-        
-        const payload = {
-          formType: 'contact',
-          firstName,
-          lastName,
-          email,
-          message,
-          interestArea,
-          source: 'Website',
-          timestamp: new Date().toISOString()
-        };
+    // Log to Google Sheets (non-blocking) - RESTORED working version
+    try {
+      const sheetsData = {
+        formType: 'contact',
+        firstName,
+        lastName,
+        email,
+        message,
+        interestArea: interestArea || '',
+        source: 'Website',
+        timestamp: new Date().toISOString()
+      };
 
-        const response = await fetch(process.env.GOOGLE_APPS_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-      } catch (error) {
-        // Ignore Google Sheets errors - don't block email sending
-      }
-    })();
+      fetch(process.env.GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sheetsData)
+      }).catch(() => {
+        // Silently fail if Google Sheets logging fails - don't block email sending
+      });
+    } catch (error) {
+      // Silently fail - Google Sheets logging is optional
+    }
 
     res.json({
       success: true,
