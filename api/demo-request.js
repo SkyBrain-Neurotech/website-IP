@@ -123,10 +123,7 @@ module.exports = async function handler(req, res) {
       `
     });
 
-    // Log to Google Sheets (non-blocking) - using exact same pattern as working server version
-    console.log('=== GOOGLE SHEETS LOGGING DEBUG (Demo Request) ===');
-    
-    // Don't await this - let it run in background to not block email response
+    // Log to Google Sheets (non-blocking)
     (async () => {
       try {
         const sheetsData = {
@@ -137,14 +134,10 @@ module.exports = async function handler(req, res) {
           company: company || '',
           interest,
           message: message || '',
-          source: 'Website',
+          source: 'Contact Form',
           timestamp: new Date().toISOString()
         };
 
-        console.log('1. Sheets data to send:', JSON.stringify(sheetsData, null, 2));
-        console.log('2. About to send to Google Apps Script...');
-
-        // Dynamic import for node-fetch v3 (exact same as working version)
         const fetch = (await import('node-fetch')).default;
         
         const response = await fetch(process.env.GOOGLE_APPS_SCRIPT_URL, {
@@ -153,19 +146,13 @@ module.exports = async function handler(req, res) {
           body: JSON.stringify(sheetsData)
         });
 
-        console.log('3. Google Sheets response status:', response.status);
-        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const result = await response.json();
-        console.log('4. Google Sheets response body:', result);
-        console.log('5. SUCCESS - Data logged to Google Sheets');
-
       } catch (error) {
-        console.log('6. ERROR - Google Sheets logging failed:', error.message);
-        console.log('7. Full error:', error);
+        // Google Sheets logging failed, but don't block email sending
       }
     })();
 
