@@ -2,7 +2,7 @@
 // Routes form submissions directly to Google Apps Script webhook
 
 // Google Apps Script webhook URL
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLD47XjgPop6hepE0oReUrePB4jrVw6rgKdmV_Sfhj05xOeH9j8PNxSLWePJw4yc34zQ/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyE-yOwMZ57AVujhm4I3ySGB5p3Ppco23j21szhjrQIi73TWza4h9RWcNPDAQQZCn0xpQ/exec';
 
 window.skybrainAPI = {
   async betaSignup(data) {
