@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 // Google SMTP configuration
 const createTransporter = () => {
@@ -499,7 +499,7 @@ const checkRateLimit = (ip) => {
 };
 
 // Main Vercel API handler
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // Enable CORS for all origins in production, specific origins in development
   const allowedOrigins = [
     'http://localhost:8080',
