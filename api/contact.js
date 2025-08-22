@@ -1,4 +1,4 @@
-import * as nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 
 // Google SMTP configuration
 const createTransporter = () => {
@@ -476,7 +476,7 @@ const checkRateLimit = (ip) => {
 };
 
 // Main Vercel API handler
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   console.log('=== CONTACT API CALLED ===');
   console.log('Method:', req.method);
   console.log('Headers:', req.headers);

@@ -1,4 +1,4 @@
-import * as nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 
 // Google SMTP configuration
 const createTransporter = () => {
@@ -6,7 +6,7 @@ const createTransporter = () => {
     service: 'gmail',
     auth: {
       user: process.env.GMAIL_USER, // Your Gmail address
-      pass: process.env.GMAIL_APP_PASSWORD // App-specific password
+      pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, '') // Remove spaces from app password
     },
     secure: true,
     port: 465
@@ -499,7 +499,7 @@ const checkRateLimit = (ip) => {
 };
 
 // Main Vercel API handler
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS for all origins in production, specific origins in development
   const allowedOrigins = [
     'http://localhost:8080',
