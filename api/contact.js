@@ -52,10 +52,6 @@ module.exports = async function handler(req, res) {
     // Test connection
     await transporter.verify();
 
-    console.log('=== CONTACT API DEBUG ===');
-    console.log('Request body received:', { firstName, lastName, email, message, interestArea });
-    console.log('About to send emails...');
-
     // Send admin notification email
     const adminResult = await transporter.sendMail({
       from: `SkyBrain <${gmailUser}>`,
@@ -81,10 +77,8 @@ module.exports = async function handler(req, res) {
       `
     });
 
-    console.log('Admin email sent with messageId:', adminResult.messageId);
-
     // Send auto-reply to user
-    const userResult = await transporter.sendMail({
+    await transporter.sendMail({
       from: `SkyBrain <${gmailUser}>`,
       to: email,
       subject: 'Thank you for contacting SkyBrain',
@@ -115,18 +109,9 @@ module.exports = async function handler(req, res) {
       `
     });
 
-    console.log('User email sent with messageId:', userResult.messageId);
-    console.log('Both emails sent successfully!');
-
     res.json({
       success: true,
-      message: 'Message sent successfully! We\'ll get back to you within 24 hours.',
-      debug: {
-        timestamp: new Date().toISOString(),
-        adminMessageId: adminResult.messageId,
-        userMessageId: userResult.messageId,
-        emailsSent: true
-      }
+      message: 'Message sent successfully! We\'ll get back to you within 24 hours.'
     });
 
   } catch (error) {

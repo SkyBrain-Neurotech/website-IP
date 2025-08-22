@@ -67,15 +67,7 @@ const ContactSection = () => {
     }
 
     try {
-      // Use relative URL for both development and production
-      const apiUrl = '/api/contact';
-      
-      console.log('=== CONTACT FORM DEBUG ===');
-      console.log('1. About to send request to:', apiUrl);
-      console.log('2. Form data being sent:', formData);
-      console.log('3. Current URL:', window.location.href);
-      
-      const response = await fetch(apiUrl, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,18 +75,13 @@ const ContactSection = () => {
         body: JSON.stringify(formData)
       });
 
-      console.log('4. Response status:', response.status);
-      console.log('5. Response headers:', Object.fromEntries(response.headers.entries()));
-      
       const result = await response.json();
-      console.log('6. Response body:', result);
       
       if (response.ok && result.success) {
-        console.log('7. SUCCESS - Form submitted successfully');
         setSubmitStatus('success');
         setSubmitMessage(result.message);
         setShowDialog(true);
-        trackFormSubmission('google_sheets_api', true);
+        trackFormSubmission('contact_form', true);
         
         // Reset form
         setFormData({
@@ -105,16 +92,14 @@ const ContactSection = () => {
           message: ''
         });
       } else {
-        console.log('8. ERROR - Form submission failed:', result);
         setSubmitStatus('error');
         setSubmitMessage(result.message || 'Form submission failed');
-        trackFormSubmission('google_sheets_api', false);
+        trackFormSubmission('contact_form', false);
       }
     } catch (error) {
-      console.log('9. EXCEPTION - Fetch failed:', error);
       setSubmitStatus('error');
       setSubmitMessage('An unexpected error occurred. Please try again or contact us directly at info@skybrain.in');
-      trackFormSubmission('enhanced_form', false);
+      trackFormSubmission('contact_form', false);
     } finally {
       setIsSubmitting(false);
     }
