@@ -139,7 +139,7 @@ module.exports = async function handler(req, res) {
         // Dynamic import for node-fetch v3 (exact same as working contact API)
         const fetch = (await import('node-fetch')).default;
         
-        const response = await fetch('https://script.google.com/macros/s/AKfycbyE-yOwMZ57AVujhm4I3ySGB5p3Ppco23j21szhjrQIi73TWza4h9RWcNPDAQQZCn0xpQ/exec', {
+        const response = await fetch(process.env.GOOGLE_APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(sheetsData)
