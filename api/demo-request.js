@@ -137,15 +137,26 @@ module.exports = async function handler(req, res) {
         timestamp: new Date().toISOString()
       };
 
+      console.log('=== GOOGLE SHEETS LOGGING DEBUG (Demo Request) ===');
+      console.log('1. Sheets data to send:', JSON.stringify(sheetsData, null, 2));
+      console.log('2. About to send to Google Apps Script...');
+
       fetch('https://script.google.com/macros/s/AKfycbyE-yOwMZ57AVujhm4I3ySGB5p3Ppco23j21szhjrQIi73TWza4h9RWcNPDAQQZCn0xpQ/exec', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sheetsData)
-      }).catch(() => {
-        // Silently fail if Google Sheets logging fails - don't block email sending
+      }).then(response => {
+        console.log('3. Google Sheets response status:', response.status);
+        return response.json();
+      }).then(result => {
+        console.log('4. Google Sheets response body:', result);
+        console.log('5. SUCCESS - Data logged to Google Sheets');
+      }).catch(error => {
+        console.log('6. ERROR - Google Sheets logging failed:', error.message);
+        // Don't block email sending
       });
     } catch (error) {
-      // Silently fail - Google Sheets logging is optional
+      console.log('7. EXCEPTION - Google Sheets logging error:', error.message);
     }
 
     res.json({
