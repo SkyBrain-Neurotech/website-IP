@@ -1,12 +1,36 @@
-const nodemailer = require('nodemailer');
-
 module.exports = async function handler(req, res) {
+  console.log('=== TEST EMAIL API START ===');
+  console.log('Node version:', process.version);
+  console.log('Platform:', process.platform);
+  console.log('Current directory:', process.cwd());
+  
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // Debug: Check if nodemailer can be loaded
+  let nodemailer;
+  try {
+    console.log('Attempting to require nodemailer...');
+    nodemailer = require('nodemailer');
+    console.log('Nodemailer loaded successfully');
+    console.log('Nodemailer type:', typeof nodemailer);
+    console.log('Nodemailer keys:', Object.keys(nodemailer || {}));
+    console.log('createTransporter exists?', typeof nodemailer?.createTransporter);
+  } catch (loadError) {
+    console.error('Failed to load nodemailer:', loadError);
+    return res.json({
+      success: false,
+      error: 'Failed to load nodemailer module',
+      details: {
+        message: loadError.message,
+        stack: loadError.stack
+      }
+    });
   }
 
   try {
@@ -67,6 +91,9 @@ module.exports = async function handler(req, res) {
 
   } catch (error) {
     console.error('SMTP test failed:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Nodemailer object:', nodemailer);
+    console.error('Nodemailer type at error:', typeof nodemailer);
     
     res.json({
       success: false,
@@ -74,7 +101,10 @@ module.exports = async function handler(req, res) {
       code: error.code,
       details: {
         gmailUser: process.env.GMAIL_USER,
-        passwordLength: process.env.GMAIL_APP_PASSWORD?.length || 0
+        passwordLength: process.env.GMAIL_APP_PASSWORD?.length || 0,
+        nodemailerType: typeof nodemailer,
+        nodemailerKeys: nodemailer ? Object.keys(nodemailer).slice(0, 10) : 'undefined',
+        errorStack: error.stack?.split('\n').slice(0, 3).join(' | ')
       }
     });
   }
