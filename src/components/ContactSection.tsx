@@ -67,8 +67,8 @@ const ContactSection = () => {
     }
 
     try {
-      // Use debug API temporarily to capture exact form data
-      const apiUrl = '/api/contact-debug';
+      // Use relative URL for both development and production
+      const apiUrl = '/api/contact';
       
       const response = await fetch(apiUrl, {
         method: 'POST',

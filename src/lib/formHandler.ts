@@ -19,19 +19,9 @@ export interface FormResponse {
 // Enhanced form submission with SkyBrain backend API
 export const submitContactForm = async (data: FormSubmissionData): Promise<FormResponse> => {
   try {
-    // Get API base URL based on environment
+    // Use relative URLs for all environments (same as ContactSection.tsx fix)
     const getApiBaseUrl = () => {
-      if (typeof window !== 'undefined') {
-        // Production/Vercel deployment - same domain
-        if (window.location.hostname.includes('vercel.app') || 
-            window.location.hostname === 'skybrain.in' || 
-            window.location.hostname.includes('skybrain')) {
-          return ''; // Empty string for same domain
-        }
-        // Development
-        return 'http://localhost:3001';
-      }
-      return 'http://localhost:3001';
+      return ''; // Always use relative URLs - works for both dev and production
     };
 
     const apiBaseUrl = getApiBaseUrl();
