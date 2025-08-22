@@ -4,5 +4,19 @@
       "source": "/((?!api).*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/contact.js": {
+      "maxDuration": 30
+    },
+    "api/demo-request.js": {
+      "maxDuration": 30
+    },
+    "api/beta-signup.js": {
+      "maxDuration": 30
+    },
+    "api/newsletter-subscribe.js": {
+      "maxDuration": 30
+    }
+  }
 }
