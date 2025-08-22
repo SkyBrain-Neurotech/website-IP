@@ -109,26 +109,24 @@ module.exports = async function handler(req, res) {
       `
     });
 
-    // Log to Google Sheets (non-blocking)
+    // Log to Google Sheets using exact same logic as working local server
     (async () => {
       try {
-        const sheetsData = {
-          firstName,
-          lastName,
-          email,
-          message,
-          interestArea: interestArea || '',
-          source: 'Website',
+        const data = { firstName, lastName, email, message, interestArea: interestArea || '' };
+        
+        // Use exact same logic as GoogleSheetsWebhookService
+        const fetch = (await import('node-fetch')).default;
+        
+        const payload = {
+          ...data,
           formType: 'contact',
           timestamp: new Date().toISOString()
         };
 
-        const fetch = (await import('node-fetch')).default;
-        
         const response = await fetch(process.env.GOOGLE_APPS_SCRIPT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(sheetsData)
+          body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
