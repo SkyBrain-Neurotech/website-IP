@@ -67,8 +67,8 @@ const ContactSection = () => {
     }
 
     try {
-      // Use relative URL for both development and production (Vite dev server proxies to Vercel functions)
-      const apiUrl = '/api/contact';
+      // Use debug API temporarily to capture exact form data
+      const apiUrl = '/api/contact-debug';
       
       const response = await fetch(apiUrl, {
         method: 'POST',
