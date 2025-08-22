@@ -109,17 +109,19 @@ module.exports = async function handler(req, res) {
       `
     });
 
-    // Log to Google Sheets using exact same logic as working local server
+    // Log to Google Sheets - EXACT payload from working test
     (async () => {
       try {
-        const data = { firstName, lastName, email, message, interestArea: interestArea || '' };
-        
-        // Use exact same logic as GoogleSheetsWebhookService
         const fetch = (await import('node-fetch')).default;
         
         const payload = {
-          ...data,
           formType: 'contact',
+          firstName,
+          lastName,
+          email,
+          message,
+          interestArea,
+          source: 'Website',
           timestamp: new Date().toISOString()
         };
 
@@ -129,13 +131,9 @@ module.exports = async function handler(req, res) {
           body: JSON.stringify(payload)
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const result = await response.json();
       } catch (error) {
-        // Google Sheets logging failed, but don't block email sending
+        // Ignore Google Sheets errors - don't block email sending
       }
     })();
 
