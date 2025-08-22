@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Newsletter Subscription</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #00D4FF;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+        .form-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #00D4FF;
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        }
+        .preferences {
+            margin-top: 20px;
+        }
+        .preference-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .preference-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        .preference-item.selected {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00D4FF;
+        }
+        .preference-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        .preference-info {
+            flex: 1;
+        }
+        .preference-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .preference-desc {
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #6b46c1 0%, #8b5cf6 50%, #a855f7 100%);
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(107, 70, 193, 0.4);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .response.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+            display: block;
+        }
+        .response.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+            display: block;
+        }
+        .logs {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 8px;
+            border-left: 3px solid #00D4FF;
+            background: rgba(0, 212, 255, 0.05);
+        }
+        .log-entry.success {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+        .log-entry.error {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .success-card {
+            text-align: center;
+            display: none;
+        }
+        .success-card.show {
+            display: block;
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📧 Newsletter Subscription Test</h1>
+        
+        <div class="form-card" id="newsletterForm">
+            <h2 style="color: #00D4FF; margin-bottom: 20px;">Subscribe to SkyBrain Updates</h2>
+            <p style="color: #b0b0b0; margin-bottom: 30px;">Get the latest updates on neurotechnology breakthroughs and product developments.</p>
+            
+            <form id="subscriptionForm">
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" value="newsletter@test.com" required placeholder="Enter your email address">
+                </div>
+                
+                <div class="preferences">
+                    <label>What interests you? (Select all that apply)</label>
+                    
+                    <div class="preference-item selected" data-pref="general">
+                        <input type="checkbox" id="general" value="general" checked>
+                        <div class="preference-info">
+                            <div class="preference-title">General Updates</div>
+                            <div class="preference-desc">Product announcements and company news</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item" data-pref="technical">
+                        <input type="checkbox" id="technical" value="technical">
+                        <div class="preference-info">
+                            <div class="preference-title">Technical Insights</div>
+                            <div class="preference-desc">Developer updates and API documentation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item selected" data-pref="research">
+                        <input type="checkbox" id="research" value="research" checked>
+                        <div class="preference-info">
+                            <div class="preference-title">Research Papers</div>
+                            <div class="preference-desc">Scientific publications and studies</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item" data-pref="community">
+                        <input type="checkbox" id="community" value="community">
+                        <div class="preference-info">
+                            <div class="preference-title">Community Events</div>
+                            <div class="preference-desc">Webinars, meetups, and beta programs</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" id="submitBtn">Subscribe to Updates</button>
+            </form>
+            
+            <div id="response" class="response"></div>
+        </div>
+
+        <div class="form-card success-card" id="successCard">
+            <div class="success-icon">✅</div>
+            <h2 style="color: #22c55e; margin-bottom: 20px;">You're All Set!</h2>
+            <p style="color: #b0b0b0; margin-bottom: 20px;">Welcome to the SkyBrain community. Check your email for a confirmation message.</p>
+            <div id="selectedPreferences" style="background: rgba(34, 197, 94, 0.1); padding: 20px; border-radius: 8px; text-align: left;">
+                <h4 style="color: #22c55e; margin-bottom: 15px;">You'll receive:</h4>
+                <div id="prefList"></div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <h3 style="color: #00D4FF; margin-bottom: 20px;">📋 Debug Logs</h3>
+            <div class="logs" id="logContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const logContainer = document.getElementById('logContainer');
+        const form = document.getElementById('subscriptionForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const responseDiv = document.getElementById('response');
+        const newsletterForm = document.getElementById('newsletterForm');
+        const successCard = document.getElementById('successCard');
+        
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        // Handle preference item clicks
+        document.querySelectorAll('.preference-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                
+                if (checkbox.checked) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        });
+        
+        // Handle checkbox changes directly
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const item = checkbox.closest('.preference-item');
+                if (checkbox.checked) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        });
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            responseDiv.className = 'response';
+            responseDiv.textContent = '';
+            logContainer.innerHTML = '';
+            
+            const email = document.getElementById('email').value;
+            const preferences = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                preferences.push(cb.value);
+            });
+            
+            if (preferences.length === 0) {
+                addLog('Error: No preferences selected', 'error');
+                responseDiv.className = 'response error';
+                responseDiv.textContent = 'Please select at least one preference.';
+                return;
+            }
+            
+            const data = {
+                email: email,
+                preferences: preferences,
+                source: 'test_page',
+                timestamp: new Date().toISOString()
+            };
+            
+            addLog('Preparing newsletter subscription...', 'info');
+            addLog(`Email: ${email}`, 'info');
+            addLog(`Preferences: ${preferences.join(', ')}`, 'info');
+            addLog(`Data: ${JSON.stringify(data, null, 2)}`, 'info');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Subscribing...';
+            
+            try {
+                addLog('Sending POST request to http://localhost:3005/api/newsletter-subscribe', 'info');
+                
+                const response = await fetch('http://localhost:3005/api/newsletter-subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                addLog(`Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const result = await response.json();
+                addLog(`Response data: ${JSON.stringify(result, null, 2)}`, response.ok ? 'success' : 'error');
+                
+                if (response.ok && result.success) {
+                    addLog('Newsletter subscription successful!', 'success');
+                    addLog('Check server console for Google Sheets processing logs', 'info');
+                    
+                    // Show success card
+                    newsletterForm.style.display = 'none';
+                    successCard.classList.add('show');
+                    
+                    // Populate selected preferences
+                    const prefList = document.getElementById('prefList');
+                    const preferenceLabels = {
+                        'general': 'General Updates',
+                        'technical': 'Technical Insights', 
+                        'research': 'Research Papers',
+                        'community': 'Community Events'
+                    };
+                    
+                    prefList.innerHTML = preferences.map(pref => 
+                        `<div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%; margin-right: 12px;"></div>
+                            <span style="color: #b0b0b0;">${preferenceLabels[pref] || pref}</span>
+                        </div>`
+                    ).join('');
+                    
+                } else {
+                    throw new Error(result.message || 'Subscription failed');
+                }
+            } catch (error) {
+                responseDiv.className = 'response error';
+                responseDiv.innerHTML = `
+                    <strong>❌ Error!</strong><br>
+                    ${error.message}<br><br>
+                    <small>Make sure the server is running on port 3005</small>
+                `;
+                addLog(`Subscription failed: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Subscribe to Updates';
+            }
+        });
+        
+        // Initialize
+        addLog('Newsletter subscription test page loaded', 'success');
+        addLog('Server should be running on http://localhost:3005', 'info');
+        addLog('Fill out form and click submit to test Google Sheets integration', 'info');
+    </script>
+</body>
+</html>

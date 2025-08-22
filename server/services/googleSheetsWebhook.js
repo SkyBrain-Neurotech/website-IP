@@ -13,64 +13,136 @@ class GoogleSheetsWebhookService {
   }
 
   async addUserSubmission(formType, userData) {
-    console.log('=== GOOGLE SHEETS WEBHOOK LOG START ===');
-    console.log('Form Type:', formType);
-    console.log('User Email:', userData.email);
-    console.log('Webhook Configured:', this.isConfigured);
-    console.log('Webhook URL:', this.webhookUrl ? 'SET' : 'NOT SET');
+    console.log('\n' + '='.repeat(60));
+    console.log('🔷 GOOGLE SHEETS WEBHOOK LOG START');
+    console.log('='.repeat(60));
+    console.log('📋 Form Type:', formType);
+    console.log('📧 User Email:', userData.email);
+    console.log('⚙️  Webhook Configured:', this.isConfigured);
+    console.log('🔗 Webhook URL:', this.webhookUrl ? `${this.webhookUrl.substring(0, 50)}...` : 'NOT SET');
+    console.log('⏰ Timestamp:', new Date().toISOString());
     
     if (!this.isConfigured) {
-      console.warn('❌ GOOGLE SHEETS: Not configured - GOOGLE_APPS_SCRIPT_URL missing in .env');
-      console.log('=== GOOGLE SHEETS WEBHOOK LOG END ===');
+      console.error('\n❌ GOOGLE SHEETS: Not configured - GOOGLE_APPS_SCRIPT_URL missing in .env');
+      console.log('='.repeat(60));
+      console.log('🔷 GOOGLE SHEETS WEBHOOK LOG END - CONFIG ERROR');
+      console.log('='.repeat(60) + '\n');
       return { success: false, error: 'Not configured' };
     }
 
     try {
-      console.log('🔄 GOOGLE SHEETS: Starting webhook request...');
+      console.log('\n🔄 GOOGLE SHEETS: Starting webhook request...');
       
       // Dynamic import for node-fetch v3
       const fetch = (await import('node-fetch')).default;
       
+      // Prepare the payload with all necessary fields
       const payload = {
-        ...userData,
-        formType,
-        timestamp: new Date().toISOString()
+        formType: formType,
+        timestamp: new Date().toISOString(),
+        // Contact form fields
+        firstName: userData.firstName || '',
+        lastName: userData.lastName || '',
+        email: userData.email || '',
+        message: userData.message || '',
+        interestArea: userData.interestArea || '',
+        // Beta signup fields
+        userType: userData.userType || '',
+        company: userData.company || '',
+        country: userData.country || '',
+        interests: userData.interests || [],
+        timeline: userData.timeline || '',
+        useCase: userData.useCase || '',
+        notifications: userData.notifications || false,
+        // Demo request fields
+        name: userData.name || '',
+        phone: userData.phone || '',
+        interest: userData.interest || '',
+        // Newsletter fields
+        preferences: userData.preferences || [],
+        // Common fields
+        source: userData.source || 'website'
       };
       
-      console.log('📤 GOOGLE SHEETS: Payload prepared:', JSON.stringify(payload, null, 2));
-      console.log('🌐 GOOGLE SHEETS: Sending POST request to:', this.webhookUrl);
+      console.log('\n📤 PAYLOAD DETAILS:');
+      console.log(JSON.stringify(payload, null, 2));
+      console.log('\n🌐 Sending POST request to Google Apps Script...');
+      console.log('🔗 URL:', this.webhookUrl);
 
+      const startTime = Date.now();
       const response = await fetch(this.webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        timeout: 30000 // 30 second timeout
       });
+      const responseTime = Date.now() - startTime;
 
-      console.log('📥 GOOGLE SHEETS: Response status:', response.status);
-      console.log('📥 GOOGLE SHEETS: Response statusText:', response.statusText);
+      console.log('\n📥 RESPONSE RECEIVED:');
+      console.log('⏱️  Response Time:', `${responseTime}ms`);
+      console.log('📊 Status Code:', response.status);
+      console.log('📝 Status Text:', response.statusText);
+      console.log('🎯 Headers:', JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2));
+
+      // Get response text first
+      const responseText = await response.text();
+      console.log('\n📄 Raw Response Body:', responseText);
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ GOOGLE SHEETS: HTTP Error Response Body:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+        console.error('\n❌ GOOGLE SHEETS: HTTP Error!');
+        console.error('Status:', response.status);
+        console.error('Response Body:', responseText);
+        throw new Error(`HTTP ${response.status}: ${responseText}`);
       }
 
-      const result = await response.json();
-      console.log('✅ GOOGLE SHEETS: Success! Response:', JSON.stringify(result, null, 2));
-      console.log(`✅ GOOGLE SHEETS: User submission logged: ${userData.email} (${formType})`);
-      console.log('=== GOOGLE SHEETS WEBHOOK LOG END ===');
+      // Try to parse as JSON
+      let result;
+      try {
+        result = JSON.parse(responseText);
+        console.log('\n✅ PARSED RESPONSE:');
+        console.log(JSON.stringify(result, null, 2));
+      } catch (parseError) {
+        console.warn('⚠️  Response is not valid JSON, treating as success');
+        result = { success: true, rawResponse: responseText };
+      }
+
+      console.log('\n' + '='.repeat(60));
+      console.log('✅ GOOGLE SHEETS: Successfully logged submission!');
+      console.log(`📧 Email: ${userData.email}`);
+      console.log(`📋 Form Type: ${formType}`);
+      console.log(`⏱️  Total Time: ${responseTime}ms`);
+      console.log('='.repeat(60));
+      console.log('🔷 GOOGLE SHEETS WEBHOOK LOG END - SUCCESS');
+      console.log('='.repeat(60) + '\n');
       
-      return result;
+      return { success: true, ...result };
     } catch (error) {
-      console.error('❌ GOOGLE SHEETS: ERROR during webhook request:');
-      console.error('❌ Error Name:', error.name);
-      console.error('❌ Error Message:', error.message);
-      console.error('❌ Error Stack:', error.stack);
-      console.log('=== GOOGLE SHEETS WEBHOOK LOG END ===');
+      console.error('\n' + '='.repeat(60));
+      console.error('❌ GOOGLE SHEETS: ERROR OCCURRED!');
+      console.error('='.repeat(60));
+      console.error('🔴 Error Type:', error.name);
+      console.error('🔴 Error Message:', error.message);
+      console.error('🔴 Error Code:', error.code);
+      
+      // Check for specific error types
+      if (error.code === 'ECONNREFUSED') {
+        console.error('🔴 Connection refused - Google Apps Script may be down');
+      } else if (error.code === 'ETIMEDOUT') {
+        console.error('🔴 Request timed out - Network issue or slow response');
+      } else if (error.message.includes('fetch')) {
+        console.error('🔴 Fetch error - Check network connectivity');
+      }
+      
+      console.error('\n🔴 Full Error Stack:');
+      console.error(error.stack);
+      console.log('='.repeat(60));
+      console.log('🔷 GOOGLE SHEETS WEBHOOK LOG END - ERROR');
+      console.log('='.repeat(60) + '\n');
+      
       // Don't throw error - let the app continue even if logging fails
-      return { success: false, error: error.message };
+      return { success: false, error: error.message, errorDetails: error };
     }
   }
 
@@ -85,9 +157,17 @@ class GoogleSheetsWebhookService {
   }
 
   async testConnection() {
+    console.log('\n' + '='.repeat(60));
+    console.log('🧪 GOOGLE SHEETS CONNECTION TEST START');
+    console.log('='.repeat(60));
+    
     if (!this.isConfigured) {
+      console.error('❌ Webhook URL not configured in .env');
+      console.log('='.repeat(60) + '\n');
       return { success: false, message: 'Webhook URL not configured' };
     }
+
+    console.log('🔗 Testing connection to:', this.webhookUrl.substring(0, 50) + '...');
 
     try {
       // Dynamic import for node-fetch v3
@@ -97,24 +177,59 @@ class GoogleSheetsWebhookService {
         formType: 'test',
         email: 'test@example.com',
         message: 'Connection test from SkyBrain server',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        firstName: 'Test',
+        lastName: 'User',
+        source: 'connection-test'
       };
 
+      console.log('📤 Sending test payload...');
+      const startTime = Date.now();
+      
       const response = await fetch(this.webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(testData)
+        body: JSON.stringify(testData),
+        timeout: 10000 // 10 second timeout for test
       });
+      
+      const responseTime = Date.now() - startTime;
+      console.log(`⏱️  Response received in ${responseTime}ms`);
+      console.log('📊 Status:', response.status);
+      
+      const responseText = await response.text();
+      console.log('📄 Response:', responseText);
 
       if (response.ok) {
-        return { success: true, message: 'Webhook connection successful' };
+        console.log('✅ Connection test SUCCESSFUL!');
+        console.log('='.repeat(60) + '\n');
+        return { 
+          success: true, 
+          message: 'Webhook connection successful',
+          responseTime: `${responseTime}ms`,
+          status: response.status,
+          response: responseText
+        };
       } else {
-        return { success: false, message: `HTTP ${response.status}: ${response.statusText}` };
+        console.error('❌ Connection test failed with HTTP error');
+        console.log('='.repeat(60) + '\n');
+        return { 
+          success: false, 
+          message: `HTTP ${response.status}: ${response.statusText}`,
+          response: responseText
+        };
       }
     } catch (error) {
-      return { success: false, message: `Connection failed: ${error.message}` };
+      console.error('❌ Connection test failed with error:', error.message);
+      console.error('Error details:', error);
+      console.log('='.repeat(60) + '\n');
+      return { 
+        success: false, 
+        message: `Connection failed: ${error.message}`,
+        error: error.toString()
+      };
     }
   }
 

@@ -9,7 +9,11 @@ interface DemoFormProps {
 
 // Use relative URLs for all environments (Vite dev server proxies to Vercel functions)
 const getApiBaseUrl = () => {
-  return ''; // Always use relative URLs
+  // For local development, use the backend server
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:3005';
+  }
+  return ''; // Always use relative URLs for production
 };
 declare global {
   interface Window {

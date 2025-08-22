@@ -1505,21 +1505,59 @@ app.post('/api/beta-signup', formLimiter, async (req, res) => {
     console.log('=== BETA SIGNUP BACKGROUND PROCESSING START ===');
     console.log('Email:', data.email);
     console.log('User Type:', data.userType);
+    console.log('Notifications enabled:', data.notifications);
     console.log('Admin Email:', process.env.ADMIN_EMAIL);
     
-    Promise.allSettled([
+    // Prepare newsletter data if notifications checkbox is checked
+    const newsletterData = data.notifications ? {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      company: data.company,
+      country: data.country,
+      interests: data.interests,
+      userType: data.userType,
+      preferences: ['technology_updates', 'beta_releases'],
+      source: 'beta-signup-checkbox',
+      timestamp: new Date().toISOString()
+    } : null;
+    
+    // Create array of promises - include newsletter subscription if notifications enabled
+    const promises = [
       googleSheetsService.addUserSubmission('beta-signup', data),
       sendEmail(process.env.ADMIN_EMAIL, emailTemplates.betaSignup, data),
       sendEmail(data.email, autoReplyTemplates.betaSignup, data)
-    ]).then(([sheetsResult, adminEmailResult, userEmailResult]) => {
+    ];
+    
+    // Add newsletter subscription if notifications enabled
+    if (newsletterData) {
+      console.log('🔔 Auto-subscribing to newsletter: "SkyBrain technology and beta releases updates"');
+      console.log('📋 Newsletter preferences:', newsletterData.preferences.join(', '));
+      promises.push(googleSheetsService.addUserSubmission('newsletter', newsletterData));
+    }
+    
+    Promise.allSettled(promises).then((results) => {
+      const [sheetsResult, adminEmailResult, userEmailResult, newsletterResult] = results;
       console.log('=== BETA SIGNUP BACKGROUND PROCESSING RESULTS ===');
       
       // Log Google Sheets result
-      console.log('📊 GOOGLE SHEETS RESULT:');
+      console.log('📊 GOOGLE SHEETS RESULT (Beta Signup):');
       if (sheetsResult.status === 'rejected') {
         console.error('❌ Google Sheets logging FAILED:', sheetsResult.reason);
       } else {
         console.log('✅ Google Sheets logging SUCCESS:', JSON.stringify(sheetsResult.value, null, 2));
+      }
+      
+      // Log Newsletter result if it was attempted
+      if (newsletterResult) {
+        console.log('📊 GOOGLE SHEETS RESULT (Newsletter Auto-Subscribe):');
+        if (newsletterResult.status === 'rejected') {
+          console.error('❌ Newsletter auto-subscription FAILED:', newsletterResult.reason);
+        } else {
+          console.log('✅ Newsletter auto-subscription SUCCESS:', JSON.stringify(newsletterResult.value, null, 2));
+        }
+      } else {
+        console.log('📊 NEWSLETTER: Skipped (notifications disabled)');
       }
       
       // Log Admin email result
@@ -1539,6 +1577,9 @@ app.post('/api/beta-signup', formLimiter, async (req, res) => {
       }
       
       console.log(`✅ Beta signup processed successfully for ${data.email}`);
+      if (newsletterResult && newsletterResult.status === 'fulfilled') {
+        console.log(`✅ Newsletter auto-subscription successful for ${data.email}`);
+      }
       console.log('=== BETA SIGNUP BACKGROUND PROCESSING END ===');
     }).catch(error => {
       console.error('❌ Beta signup background processing error:', error);

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Contact Form Submission</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            background: #6b46c1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #5835a5;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .response.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .response.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .logs {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            background: white;
+            border-left: 3px solid #007bff;
+        }
+        .log-entry.error {
+            border-left-color: #dc3545;
+        }
+        .log-entry.success {
+            border-left-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Contact Form Submission</h1>
+        
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" value="Test" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" value="User" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="test@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="interestArea">Interest Area:</label>
+                <select id="interestArea" name="interestArea">
+                    <option value="">Select an area</option>
+                    <option value="Research">Research</option>
+                    <option value="Development">Development</option>
+                    <option value="Clinical">Clinical Applications</option>
+                    <option value="Investment">Investment</option>
+                    <option value="Partnership">Partnership</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required>This is a test message to verify that the contact form is working properly with both email and Google Sheets integration.</textarea>
+            </div>
+            
+            <button type="submit" id="submitBtn">Send Test Message</button>
+        </form>
+        
+        <div id="response" class="response"></div>
+        
+        <div class="logs">
+            <h3>📋 Debug Logs:</h3>
+            <div id="logContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const responseDiv = document.getElementById('response');
+        const logContainer = document.getElementById('logContainer');
+        
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            responseDiv.className = 'response';
+            responseDiv.textContent = '';
+            logContainer.innerHTML = '';
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                interestArea: document.getElementById('interestArea').value,
+                message: document.getElementById('message').value
+            };
+            
+            addLog('Preparing to send form data...', 'info');
+            addLog(`Data: ${JSON.stringify(formData, null, 2)}`, 'info');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            try {
+                addLog('Sending POST request to http://localhost:3005/api/contact', 'info');
+                
+                const response = await fetch('http://localhost:3005/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                addLog(`Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                addLog(`Response data: ${JSON.stringify(data, null, 2)}`, response.ok ? 'success' : 'error');
+                
+                if (response.ok && data.success) {
+                    responseDiv.className = 'response success';
+                    responseDiv.innerHTML = `
+                        <strong>✅ Success!</strong><br>
+                        ${data.message}<br><br>
+                        <small>Check the server console for detailed logs about email and Google Sheets processing.</small>
+                    `;
+                    addLog('Form submitted successfully!', 'success');
+                    addLog('Check server console for background processing logs', 'info');
+                } else {
+                    responseDiv.className = 'response error';
+                    responseDiv.innerHTML = `
+                        <strong>❌ Error!</strong><br>
+                        ${data.message || 'Failed to submit form'}<br>
+                        ${data.errors ? data.errors.join('<br>') : ''}
+                    `;
+                    addLog('Form submission failed', 'error');
+                }
+            } catch (error) {
+                responseDiv.className = 'response error';
+                responseDiv.innerHTML = `
+                    <strong>❌ Network Error!</strong><br>
+                    ${error.message}<br><br>
+                    <small>Make sure the server is running on port 3005</small>
+                `;
+                addLog(`Network error: ${error.message}`, 'error');
+                addLog('Make sure the server is running: npm run server:dev', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Test Message';
+            }
+        });
+        
+        // Auto-fill with test data
+        addLog('Test form loaded and ready', 'info');
+        addLog('Server should be running on http://localhost:3005', 'info');
+    </script>
+</body>
+</html>
