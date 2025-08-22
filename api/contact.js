@@ -52,8 +52,12 @@ module.exports = async function handler(req, res) {
     // Test connection
     await transporter.verify();
 
+    console.log('=== CONTACT API DEBUG ===');
+    console.log('Request body received:', { firstName, lastName, email, message, interestArea });
+    console.log('About to send emails...');
+
     // Send admin notification email
-    await transporter.sendMail({
+    const adminResult = await transporter.sendMail({
       from: `SkyBrain <${gmailUser}>`,
       to: 'info@skybrain.in',
       subject: `🧠 New Contact Form Submission from ${firstName} ${lastName}`,
@@ -77,8 +81,10 @@ module.exports = async function handler(req, res) {
       `
     });
 
+    console.log('Admin email sent with messageId:', adminResult.messageId);
+
     // Send auto-reply to user
-    await transporter.sendMail({
+    const userResult = await transporter.sendMail({
       from: `SkyBrain <${gmailUser}>`,
       to: email,
       subject: 'Thank you for contacting SkyBrain',
@@ -109,12 +115,17 @@ module.exports = async function handler(req, res) {
       `
     });
 
+    console.log('User email sent with messageId:', userResult.messageId);
+    console.log('Both emails sent successfully!');
+
     res.json({
       success: true,
       message: 'Message sent successfully! We\'ll get back to you within 24 hours.',
       debug: {
         timestamp: new Date().toISOString(),
-        emailsSent: 'Emails should be delivered to info@skybrain.in and user email'
+        adminMessageId: adminResult.messageId,
+        userMessageId: userResult.messageId,
+        emailsSent: true
       }
     });
 
