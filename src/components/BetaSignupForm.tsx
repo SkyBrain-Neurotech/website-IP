@@ -3,19 +3,10 @@ import { Button } from '@/components/ui/button';
 import { showComingSoonNotification } from '@/lib/notifications';
 import { ArrowLeft, ArrowRight, CheckCircle2, Mail, User, Building, Globe, Zap, Brain, Heart, Code } from 'lucide-react';
 
-// Get API base URL based on environment
+// Use relative URLs for all environments (Vite dev server proxies to Vercel functions)
 const getApiBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    // Production/Vercel deployment - same domain
-    if (window.location.hostname.includes('vercel.app') || 
-        window.location.hostname === 'skybrain.in' || 
-        window.location.hostname.includes('skybrain')) {
-      return ''; // Empty string for same domain
-    }
-    // Development
-    return 'http://localhost:3005';
-  }
-  return 'http://localhost:3001';};
+  return ''; // Always use relative URLs
+};
 
 interface BetaSignupFormProps {
   userType: string;

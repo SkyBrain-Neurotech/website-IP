@@ -67,10 +67,8 @@ const ContactSection = () => {
     }
 
     try {
-      // Use local Express server for development, Vercel API for production
-      const apiUrl = process.env.NODE_ENV === 'development' 
-        ? 'http://localhost:3005/api/contact'
-        : '/api/contact';
+      // Use relative URL for both development and production (Vite dev server proxies to Vercel functions)
+      const apiUrl = '/api/contact';
       
       const response = await fetch(apiUrl, {
         method: 'POST',
