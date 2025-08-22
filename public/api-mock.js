@@ -8,6 +8,8 @@ const simulateDelay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, 
 let mockDatabase = {
   betaSignups: [],
   newsletterSubscriptions: [],
+  contactMessages: [],
+  demoRequests: [],
   analytics: []
 };
 
@@ -85,6 +87,60 @@ window.mockAPI = {
     };
   },
 
+  async contact(data) {
+    await simulateDelay(1200);
+    
+    // Simulate validation
+    if (!data.name || !data.email || !data.message) {
+      throw new Error('Missing required fields: name, email, and message');
+    }
+    
+    // Store contact message
+    const message = {
+      id: Date.now(),
+      ...data,
+      createdAt: new Date().toISOString(),
+      status: 'new'
+    };
+    
+    mockDatabase.contactMessages.push(message);
+    
+    console.log('Mock Contact Message:', message);
+    
+    return {
+      success: true,
+      message: 'Thank you for your message. We will get back to you soon!',
+      id: message.id
+    };
+  },
+
+  async demoRequest(data) {
+    await simulateDelay(1500);
+    
+    // Simulate validation
+    if (!data.name || !data.email || !data.company) {
+      throw new Error('Missing required fields: name, email, and company');
+    }
+    
+    // Store demo request
+    const request = {
+      id: Date.now(),
+      ...data,
+      createdAt: new Date().toISOString(),
+      status: 'pending_review'
+    };
+    
+    mockDatabase.demoRequests.push(request);
+    
+    console.log('Mock Demo Request:', request);
+    
+    return {
+      success: true,
+      message: 'Demo request submitted successfully. We will contact you within 24 hours!',
+      id: request.id
+    };
+  },
+
   async trackAnalytics(data) {
     // No delay for analytics to avoid affecting user experience
     const event = {
@@ -108,8 +164,12 @@ window.mockAPI = {
     return {
       betaSignups: mockDatabase.betaSignups.length,
       newsletters: mockDatabase.newsletterSubscriptions.length,
+      contactMessages: mockDatabase.contactMessages.length,
+      demoRequests: mockDatabase.demoRequests.length,
       analyticsEvents: mockDatabase.analytics.length,
       recentSignups: mockDatabase.betaSignups.slice(-5),
+      recentContacts: mockDatabase.contactMessages.slice(-5),
+      recentDemos: mockDatabase.demoRequests.slice(-5),
       recentAnalytics: mockDatabase.analytics.slice(-10)
     };
   }
@@ -131,6 +191,12 @@ window.fetch = async function(url, options) {
           break;
         case 'newsletter-subscribe':
           result = await window.mockAPI.newsletterSubscribe(data);
+          break;
+        case 'contact':
+          result = await window.mockAPI.contact(data);
+          break;
+        case 'demo-request':
+          result = await window.mockAPI.demoRequest(data);
           break;
         case 'analytics/track':
           result = await window.mockAPI.trackAnalytics(data);
