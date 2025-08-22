@@ -1,18 +1,5 @@
 const nodemailer = require('nodemailer');
 
-// Google SMTP configuration
-const createTransporter = () => {
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER, // Your Gmail address
-      pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, '') // Remove all spaces from app password
-    },
-    secure: true,
-    port: 465
-  });
-};
-
 // Professional SkyBrain Email Template for Contact Form
 const contactEmailTemplate = (data) => ({
   subject: `🧠 New Contact Form Submission from ${data.firstName} ${data.lastName}`,
@@ -374,9 +361,19 @@ const validateContactForm = (data) => {
   };
 };
 
-// Send email function
+// Send email function using exact same logic as working test-email
 const sendEmail = async (to, template, data) => {
-  const transporter = createTransporter();
+  // Use exact same transporter creation as test-email.js
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, '') // Remove spaces from app password
+    },
+    secure: true,
+    port: 465
+  });
+  
   const emailContent = template(data);
   
   const mailOptions = {

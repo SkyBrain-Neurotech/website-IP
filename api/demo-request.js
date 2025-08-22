@@ -1,16 +1,27 @@
 const nodemailer = require('nodemailer');
 
-// Google SMTP configuration
-const createTransporter = () => {
-  return nodemailer.createTransport({
+// Send email function using exact same logic as working test-email
+const sendEmail = async (to, template, data) => {
+  const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.GMAIL_USER, // Your Gmail address
-      pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, '') // Remove spaces from app password
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, '')
     },
     secure: true,
     port: 465
   });
+  
+  const emailContent = template(data);
+  
+  const mailOptions = {
+    from: `SkyBrain <${process.env.GMAIL_USER}>`,
+    to: to,
+    subject: emailContent.subject,
+    html: emailContent.html
+  };
+  
+  return await transporter.sendMail(mailOptions);
 };
 
 // Demo Request Email Template (Admin Notification)

@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 
-// Google SMTP configuration
-const createTransporter = () => {
-  return nodemailer.createTransport({
+// Send email function using exact same logic as working test-email
+const sendEmail = async (to, template, data) => {
+  const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.GMAIL_USER,
@@ -11,6 +11,17 @@ const createTransporter = () => {
     secure: true,
     port: 465
   });
+  
+  const emailContent = template(data);
+  
+  const mailOptions = {
+    from: `SkyBrain <${process.env.GMAIL_USER}>`,
+    to: to,
+    subject: emailContent.subject,
+    html: emailContent.html
+  };
+  
+  return await transporter.sendMail(mailOptions);
 };
 
 // Beta Signup Email Template (Admin Notification)
@@ -399,20 +410,6 @@ const validateBetaForm = (data) => {
   };
 };
 
-// Send email function
-const sendEmail = async (to, template, data) => {
-  const transporter = createTransporter();
-  const emailContent = template(data);
-  
-  const mailOptions = {
-    from: `SkyBrain <${process.env.GMAIL_USER}>`,
-    to: to,
-    subject: emailContent.subject,
-    html: emailContent.html
-  };
-  
-  return await transporter.sendMail(mailOptions);
-};
 
 // Google Sheets webhook function
 const logToGoogleSheets = async (data) => {
