@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
     }
 
     // Validate form data
-    const { name, email, phone, company, interest, message } = req.body;
+    const { name, email, phone, company, interest, message, recaptchaToken, timestamp, source } = req.body;
     
     if (!name || !email || !interest) {
       return res.status(400).json({
@@ -77,14 +77,15 @@ module.exports = async function handler(req, res) {
     // Prepare demo request data for Google Sheets
     const demoData = {
       formType: 'demo_requests',  // This will create/update the demo_requests sheet
-      timestamp: new Date().toISOString(),
+      timestamp: timestamp || new Date().toISOString(),
       name,
       email,
       phone: phone || '',
       company: company || '',
       interest,
       message: message || '',
-      source: 'website'
+      recaptchaToken: recaptchaToken || null,
+      source: source || 'website'
     };
 
     // Create promises array
