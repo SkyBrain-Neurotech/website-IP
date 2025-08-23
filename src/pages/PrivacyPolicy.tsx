@@ -70,44 +70,45 @@ const PrivacyPolicy = () => {
   return (
     <PageLayout>
       <div className="min-h-screen bg-gradient-to-br from-deep-space via-shadow-black to-deep-space">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-16">
           {/* Header */}
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-8">
-              <Shield className="h-16 w-16 text-neural-blue mr-6" />
-              <div className="text-left">
-                <h1 className="text-4xl md:text-6xl font-bold text-ghost-white font-orbitron leading-tight">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center mb-8">
+              <Shield className="h-12 w-12 sm:h-16 sm:w-16 text-neural-blue mb-4 sm:mb-0 sm:mr-6" />
+              <div className="text-center sm:text-left">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-ghost-white font-orbitron leading-tight">
                   Privacy Policy
                 </h1>
-                <p className="text-neural-blue text-lg mt-2 font-medium">
+                <p className="text-neural-blue text-base sm:text-lg mt-2 font-medium">
                   Data Protection & Compliance Framework
                 </p>
               </div>
             </div>
             <div className="glass-container p-4 max-w-3xl mx-auto">
-              <p className="text-neural-gray text-lg">
-                <span className="font-semibold">Effective Date:</span> August 2, 2025 | 
-                <span className="font-semibold"> Last Updated:</span> August 2, 2025
+              <p className="text-neural-gray text-sm sm:text-lg">
+                <span className="font-semibold">Effective Date:</span> August 2, 2025<br className="sm:hidden" />
+                <span className="hidden sm:inline"> | </span>
+                <span className="font-semibold">Last Updated:</span> August 2, 2025
               </p>
             </div>
           </div>
 
           {/* Overview */}
-          <div className="glass-container p-6 mb-8 border-l-4 border-neural-blue">
+          <div className="glass-container p-4 sm:p-6 mb-6 sm:mb-8 border-l-4 border-neural-blue">
             <div className="flex items-start">
-              <Eye className="h-6 w-6 text-neural-blue mr-3 flex-shrink-0 mt-1" />
+              <Eye className="h-5 w-5 sm:h-6 sm:w-6 text-neural-blue mr-3 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-lg font-bold text-ghost-white mb-2">Our Commitment to Privacy</h3>
-                <p className="text-neural-gray">
+                <h3 className="text-base sm:text-lg font-bold text-ghost-white mb-2">Our Commitment to Privacy</h3>
+                <p className="text-neural-gray text-sm sm:text-base leading-relaxed">
                   Neural Core Private Limited ("SkyBrain," "we," "our," or "us") is committed to protecting your privacy. 
                   This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our 
                   EEG research and wellness application ("Service").
                 </p>
-                <p className="text-neural-gray mt-2">
+                <p className="text-neural-gray text-sm sm:text-base mt-3 leading-relaxed">
                   <strong>Important:</strong> SkyBrain is a research and wellness tool for educational and personal purposes only - 
                   it is NOT a medical device and does NOT provide medical diagnosis, treatment, or medical advice.
                 </p>
-                <p className="text-neural-gray mt-2">
+                <p className="text-neural-gray text-sm sm:text-base mt-3 leading-relaxed">
                   <strong>Legal Compliance:</strong> This policy complies with India's Digital Personal Data Protection Act 2023 (DPDP), 
                   Information Technology Act 2000, Google's verification requirements, and international standards including GDPR and CCPA.
                 </p>
@@ -116,27 +117,27 @@ const PrivacyPolicy = () => {
           </div>
 
           {/* Main Content */}
-          <div className="glass-container p-8 lg:p-12 space-y-12">
+          <div className="glass-container p-4 sm:p-6 lg:p-8 xl:p-12 space-y-8 sm:space-y-12">
             
             {/* Information We Collect */}
             <section>
-              <div className="text-center mb-8">
-                <h2 className="text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex items-center justify-center">
-                  <Database className="h-8 w-8 mr-3" />
-                  Information We Collect
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex flex-col sm:flex-row items-center justify-center">
+                  <Database className="h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-0 sm:mr-3" />
+                  <span>Information We Collect</span>
                 </h2>
-                <p className="text-neural-gray max-w-3xl mx-auto leading-relaxed">
+                <p className="text-neural-gray text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
                   We collect only the essential information needed to provide our EEG research and wellness services while maintaining strict privacy standards.
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="glass-badge p-6 h-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div className="glass-badge p-4 sm:p-6 h-full">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">🧠 EEG Data</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">🧠 EEG Data</h3>
                     <div className="w-12 h-0.5 bg-neural-blue mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Brain activity recordings from compatible EEG devices</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Session metadata (duration, timestamp, device info)</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Signal quality metrics and electrode measurements</li>
@@ -144,12 +145,12 @@ const PrivacyPolicy = () => {
                   </ul>
                 </div>
                 
-                <div className="glass-badge p-6 h-full">
+                <div className="glass-badge p-4 sm:p-6 h-full">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">👤 Account Information</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">👤 Account Information</h3>
                     <div className="w-12 h-0.5 bg-neural-blue mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Email address for authentication</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>User preferences and application settings</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Session notes and custom labels</li>
@@ -157,12 +158,12 @@ const PrivacyPolicy = () => {
                   </ul>
                 </div>
                 
-                <div className="glass-badge p-6 h-full">
+                <div className="glass-badge p-4 sm:p-6 h-full">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">⚙️ Technical Information</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">⚙️ Technical Information</h3>
                     <div className="w-12 h-0.5 bg-neural-blue mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Device info (browser, OS, device model)</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Usage data (features accessed, session frequency)</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Performance metrics for optimization</li>
@@ -170,12 +171,12 @@ const PrivacyPolicy = () => {
                   </ul>
                 </div>
                 
-                <div className="glass-badge p-6 h-full">
+                <div className="glass-badge p-4 sm:p-6 h-full">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">📋 Optional Information</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">📋 Optional Information</h3>
                     <div className="w-12 h-0.5 bg-neural-blue mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Research participation data (with consent)</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Feedback and support communications</li>
                     <li className="flex items-start"><span className="text-neural-blue mr-2">•</span>Additional profile details you choose to provide</li>
@@ -186,23 +187,23 @@ const PrivacyPolicy = () => {
 
             {/* How We Use Your Information */}
             <section>
-              <div className="text-center mb-8">
-                <h2 className="text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex items-center justify-center">
-                  <Eye className="h-8 w-8 mr-3" />
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex flex-col sm:flex-row items-center justify-center">
+                  <Eye className="h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-0 sm:mr-3" />
                   How We Use Your Information
                 </h2>
-                <p className="text-neural-gray max-w-3xl mx-auto leading-relaxed">
+                <p className="text-neural-gray text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
                   We use your information responsibly and transparently, with clear purposes and strong safeguards to protect your privacy.
                 </p>
               </div>
               
-              <div className="space-y-8">
-                <div className="glass-badge p-6 border-l-4 border-green-500">
+              <div className="space-y-6 sm:space-y-8">
+                <div className="glass-badge p-4 sm:p-6 border-l-4 border-green-500">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">✅ Primary Uses</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">✅ Primary Uses</h3>
                     <div className="w-12 h-0.5 bg-green-500 mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-green-400 mr-2">•</span><strong>EEG Analysis:</strong> Process and analyze brain activity data for personal insights</li>
                     <li className="flex items-start"><span className="text-green-400 mr-2">•</span><strong>Session Management:</strong> Store and organize your recording sessions</li>
                     <li className="flex items-start"><span className="text-green-400 mr-2">•</span><strong>Data Visualization:</strong> Generate charts, trends, and analytics dashboards</li>
@@ -210,12 +211,12 @@ const PrivacyPolicy = () => {
                   </ul>
                 </div>
                 
-                <div className="glass-badge p-6 border-l-4 border-blue-500">
+                <div className="glass-badge p-4 sm:p-6 border-l-4 border-blue-500">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">🔧 Secondary Uses</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">🔧 Secondary Uses</h3>
                     <div className="w-12 h-0.5 bg-blue-500 mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-blue-400 mr-2">•</span><strong>Service Improvement:</strong> Enhance application features and performance</li>
                     <li className="flex items-start"><span className="text-blue-400 mr-2">•</span><strong>Research Support:</strong> Aggregate anonymous data for neuroscience research (with consent)</li>
                     <li className="flex items-start"><span className="text-blue-400 mr-2">•</span><strong>Technical Support:</strong> Provide customer service and troubleshooting</li>
@@ -223,12 +224,12 @@ const PrivacyPolicy = () => {
                   </ul>
                 </div>
                 
-                <div className="glass-badge p-6 border-l-4 border-red-500">
+                <div className="glass-badge p-4 sm:p-6 border-l-4 border-red-500">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">❌ We DO NOT Use Your Data For</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">❌ We DO NOT Use Your Data For</h3>
                     <div className="w-12 h-0.5 bg-red-500 mx-auto"></div>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-red-400 mr-2">•</span>Sharing with healthcare providers without explicit consent</li>
                     <li className="flex items-start"><span className="text-red-400 mr-2">•</span>Commercial sale to third parties</li>
                   </ul>
@@ -238,15 +239,15 @@ const PrivacyPolicy = () => {
 
             {/* Data Storage and Security */}
             <section>
-              <h2 className="text-2xl font-bold text-neural-blue mb-4 font-orbitron flex items-center">
-                <Lock className="h-6 w-6 mr-2" />
+              <h2 className="text-xl sm:text-2xl font-bold text-neural-blue mb-4 font-orbitron flex flex-col sm:flex-row items-center">
+                <Lock className="h-5 w-5 sm:h-6 sm:w-6 mb-2 sm:mb-0 sm:mr-2" />
                 Data Storage and Security
               </h2>
               
               <div className="space-y-4">
-                <div className="glass-badge p-4">
-                  <h3 className="text-lg font-semibold text-ghost-white mb-3">Storage Infrastructure</h3>
-                  <ul className="space-y-2 text-neural-gray">
+                <div className="glass-badge p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-semibold text-ghost-white mb-3">Storage Infrastructure</h3>
+                  <ul className="space-y-2 text-neural-gray text-sm sm:text-base">
                     <li>• <strong>Primary Database:</strong> Supabase (PostgreSQL) with enterprise-grade security</li>
                     <li>• <strong>Data Encryption:</strong> All data encrypted in transit (TLS 1.3) and at rest (AES-256)</li>
                     <li>• <strong>Geographic Location:</strong> Secure data centers with SOC 2 compliance</li>
@@ -254,9 +255,9 @@ const PrivacyPolicy = () => {
                   </ul>
                 </div>
                 
-                <div className="glass-badge p-4">
-                  <h3 className="text-lg font-semibold text-ghost-white mb-3">Security Measures</h3>
-                  <ul className="space-y-2 text-neural-gray">
+                <div className="glass-badge p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-semibold text-ghost-white mb-3">Security Measures</h3>
+                  <ul className="space-y-2 text-neural-gray text-sm sm:text-base">
                     <li>• Role-based access controls with multi-factor authentication</li>
                     <li>• Data minimization - we collect only necessary data</li>
                     <li>• Regular security assessments and vulnerability testing</li>
@@ -268,16 +269,16 @@ const PrivacyPolicy = () => {
 
             {/* Data Sharing */}
             <section>
-              <h2 className="text-2xl font-bold text-neural-blue mb-4 font-orbitron">Data Sharing and Disclosure</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-neural-blue mb-4 font-orbitron">Data Sharing and Disclosure</h2>
               
-              <div className="glass-badge p-6 border-l-4 border-green-500 mb-4">
-                <h3 className="text-xl font-bold text-ghost-white mb-2">WE DO NOT SELL YOUR DATA</h3>
-                <p className="text-neural-gray">
+              <div className="glass-badge p-4 sm:p-6 border-l-4 border-green-500 mb-4">
+                <h3 className="text-lg sm:text-xl font-bold text-ghost-white mb-2">WE DO NOT SELL YOUR DATA</h3>
+                <p className="text-neural-gray text-sm sm:text-base">
                   SkyBrain does not sell, rent, or lease your personal information or EEG data to third parties.
                 </p>
               </div>
               
-              <div className="space-y-3 text-neural-gray">
+              <div className="space-y-3 text-neural-gray text-sm sm:text-base">
                 <p><strong>Limited Sharing Scenarios:</strong> We may share your information only in specific circumstances:</p>
                 <ul className="space-y-2 ml-4">
                   <li>• With your explicit consent</li>
@@ -444,12 +445,12 @@ const PrivacyPolicy = () => {
                 <Mail className="h-6 w-6 mr-2" />
                 Contact Information
               </h2>
-              <div className="glass-badge p-6 border-l-4 border-neural-blue">
-                <div className="text-center">
-                  <h3 className="text-xl font-semibold text-ghost-white mb-4">All Inquiries & Support</h3>
+              <div className="glass-badge p-4 sm:p-6 border-l-4 border-neural-blue">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-4">All Inquiries & Support</h3>
                   <div className="space-y-3">
-                    <p className="text-2xl font-bold text-neural-blue">info@skybrain.in</p>
-                    <div className="text-neural-gray space-y-1">
+                    <p className="text-xl sm:text-2xl font-bold text-neural-blue">info@skybrain.in</p>
+                    <div className="text-neural-gray text-sm sm:text-base space-y-1">
                       <p>• Privacy inquiries and data subject requests</p>
                       <p>• GDPR, DPDP Act, and data protection compliance</p>
                       <p>• Technical support and general questions</p>
@@ -469,12 +470,12 @@ const PrivacyPolicy = () => {
           </div>
 
           {/* Medical Disclaimer */}
-          <div className="glass-container p-6 mt-8 border-l-4 border-red-500 text-center">
-            <div className="flex items-center justify-center mb-3">
-              <Brain className="h-6 w-6 text-red-400 mr-2" />
-              <h3 className="text-xl font-bold text-red-400">IMPORTANT MEDICAL DISCLAIMER</h3>
+          <div className="glass-container p-4 sm:p-6 mt-6 sm:mt-8 border-l-4 border-red-500">
+            <div className="flex items-center mb-3">
+              <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-red-400 mr-2" />
+              <h3 className="text-lg sm:text-xl font-bold text-red-400">IMPORTANT MEDICAL DISCLAIMER</h3>
             </div>
-            <p className="text-neural-gray">
+            <p className="text-neural-gray text-sm sm:text-base leading-relaxed">
               <strong>SkyBrain is NOT a medical device and is NOT intended for medical use.</strong> 
               The Service does not diagnose medical conditions, provide medical advice, or replace professional medical consultation. 
               For medical concerns, always consult qualified healthcare professionals.

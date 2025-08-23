@@ -70,35 +70,36 @@ const TermsOfService = () => {
   return (
     <PageLayout>
       <div className="min-h-screen bg-gradient-to-br from-deep-space via-shadow-black to-deep-space">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-16">
           {/* Header */}
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-8">
-              <FileText className="h-16 w-16 text-neural-blue mr-6" />
-              <div className="text-left">
-                <h1 className="text-4xl md:text-6xl font-bold text-ghost-white font-orbitron leading-tight">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center mb-8">
+              <FileText className="h-12 w-12 sm:h-16 sm:w-16 text-neural-blue mb-4 sm:mb-0 sm:mr-6" />
+              <div className="text-center sm:text-left">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-ghost-white font-orbitron leading-tight">
                   Terms of Service
                 </h1>
-                <p className="text-neural-blue text-lg mt-2 font-medium">
+                <p className="text-neural-blue text-base sm:text-lg mt-2 font-medium">
                   Legal Agreement & User Guidelines
                 </p>
               </div>
             </div>
-            <div className="glass-container p-4 max-w-3xl mx-auto">
-              <p className="text-neural-gray text-lg">
-                <span className="font-semibold">Effective Date:</span> August 2, 2025 | 
-                <span className="font-semibold"> Last Updated:</span> August 2, 2025
+            <div className="glass-container p-4 sm:p-6 max-w-3xl mx-auto">
+              <p className="text-neural-gray text-sm sm:text-lg">
+                <span className="font-semibold">Effective Date:</span> August 2, 2025<br className="sm:hidden" />
+                <span className="hidden sm:inline"> | </span>
+                <span className="font-semibold">Last Updated:</span> August 2, 2025
               </p>
             </div>
           </div>
 
           {/* Critical Notice */}
-          <div className="glass-container p-6 mb-8 border-l-4 border-red-500">
+          <div className="glass-container p-4 sm:p-6 mb-6 sm:mb-8 border-l-4 border-red-500">
             <div className="flex items-start">
-              <AlertTriangle className="h-6 w-6 text-red-500 mr-3 flex-shrink-0 mt-1" />
+              <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-red-500 mr-3 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-lg font-bold text-ghost-white mb-2">CRITICAL NOTICE</h3>
-                <p className="text-neural-gray">
+                <h3 className="text-base sm:text-lg font-bold text-ghost-white mb-2">CRITICAL NOTICE</h3>
+                <p className="text-neural-gray text-sm sm:text-base leading-relaxed">
                   SkyBrain is a research and wellness application for educational and personal insight purposes only. 
                   It is <strong>NOT a medical device</strong> and does <strong>NOT provide medical diagnoses, treatment, or medical advice</strong>.
                 </p>
@@ -107,35 +108,34 @@ const TermsOfService = () => {
           </div>
 
           {/* Main Content */}
-          <div className="glass-container p-8 lg:p-12 space-y-12">
+          <div className="glass-container p-4 sm:p-6 lg:p-8 xl:p-12 space-y-8 sm:space-y-12">
             
             {/* Agreement to Terms */}
             <section>
-              <div className="text-center mb-8">
-                <h2 className="text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex items-center justify-center">
-                  <FileText className="h-8 w-8 mr-3" />
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex flex-col sm:flex-row items-center justify-center">
+                  <FileText className="h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-0 sm:mr-3" />
                   Agreement to Terms
                 </h2>
-                <p className="text-neural-gray max-w-3xl mx-auto leading-relaxed">
+                <p className="text-neural-gray text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
                   By using our Service, you enter into a legal agreement with Neural Core Private Limited.
                 </p>
               </div>
               
-              <div className="space-y-6">
-                <div className="glass-badge p-6">
-                  <p className="text-neural-gray leading-relaxed text-center">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="glass-badge p-4 sm:p-6">
+                  <p className="text-neural-gray text-sm sm:text-base leading-relaxed">
                     By accessing or using the SkyBrain application ("Service") provided by <strong className="text-ghost-white">Neural Core Private Limited</strong> 
                     ("SkyBrain," "we," "our," or "us"), you agree to be bound by these Terms of Service ("Terms"). 
                     If you disagree with any part of these terms, you may not access the Service.
                   </p>
                 </div>
                 
-                <div className="glass-badge p-6 border-l-4 border-blue-500">
-                  <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">⚖️ Legal Framework</h3>
-                    <div className="w-12 h-0.5 bg-blue-500 mx-auto"></div>
+                <div className="glass-badge p-4 sm:p-6 border-l-4 border-blue-500">
+                  <div className="mb-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">⚖️ Legal Framework</h3>
                   </div>
-                  <p className="text-neural-gray text-center">
+                  <p className="text-neural-gray text-sm sm:text-base leading-relaxed">
                     These Terms comply with India's Digital Personal Data Protection Act 2023, Information Technology Act 2000, 
                     Google's verification requirements, and international standards. By using our Service, you acknowledge our 
                     compliance with these legal frameworks.
@@ -146,23 +146,22 @@ const TermsOfService = () => {
 
             {/* Service Description */}
             <section>
-              <div className="text-center mb-8">
-                <h2 className="text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex items-center justify-center">
-                  <Brain className="h-8 w-8 mr-3" />
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-neural-blue mb-4 font-orbitron flex flex-col sm:flex-row items-center justify-center">
+                  <Brain className="h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-0 sm:mr-3" />
                   Description of Service
                 </h2>
-                <p className="text-neural-gray max-w-3xl mx-auto leading-relaxed">
+                <p className="text-neural-gray text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
                   Understanding what SkyBrain is and what it is NOT - important distinctions for your safety and compliance.
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="glass-badge p-6 border-l-4 border-green-500 h-full">
-                  <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">✅ What SkyBrain IS</h3>
-                    <div className="w-12 h-0.5 bg-green-500 mx-auto"></div>
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div className="glass-badge p-4 sm:p-6 border-l-4 border-green-500 h-full">
+                  <div className="mb-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">✅ What SkyBrain IS</h3>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-green-400 mr-2">•</span>Connects with compatible EEG devices (BrainBit, etc.) for brain activity monitoring</li>
                     <li className="flex items-start"><span className="text-green-400 mr-2">•</span>Records and analyzes brainwave patterns for research and wellness purposes</li>
                     <li className="flex items-start"><span className="text-green-400 mr-2">•</span>Provides data visualization, analytics, and personal insights</li>
@@ -171,12 +170,11 @@ const TermsOfService = () => {
                   </ul>
                 </div>
 
-                <div className="glass-badge p-6 border-l-4 border-red-500 h-full">
-                  <div className="text-center mb-4">
-                    <h3 className="text-xl font-semibold text-ghost-white mb-2">❌ What SkyBrain Is NOT</h3>
-                    <div className="w-12 h-0.5 bg-red-500 mx-auto"></div>
+                <div className="glass-badge p-4 sm:p-6 border-l-4 border-red-500 h-full">
+                  <div className="mb-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-2">❌ What SkyBrain Is NOT</h3>
                   </div>
-                  <ul className="space-y-3 text-neural-gray">
+                  <ul className="space-y-2 sm:space-y-3 text-neural-gray text-sm sm:text-base">
                     <li className="flex items-start"><span className="text-red-400 mr-2">•</span>A medical device or medical software</li>
                     <li className="flex items-start"><span className="text-red-400 mr-2">•</span>A diagnostic tool for medical conditions</li>
                     <li className="flex items-start"><span className="text-red-400 mr-2">•</span>A treatment or therapy platform</li>
@@ -354,11 +352,11 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-bold text-neural-blue mb-4 font-orbitron">Contact Information</h2>
               <div className="glass-badge p-6 border-l-4 border-neural-blue">
-                <div className="text-center">
-                  <h3 className="text-xl font-semibold text-ghost-white mb-4">All Inquiries & Support</h3>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-ghost-white mb-4">All Inquiries & Support</h3>
                   <div className="space-y-3">
-                    <p className="text-2xl font-bold text-neural-blue">info@skybrain.in</p>
-                    <div className="text-neural-gray space-y-1">
+                    <p className="text-xl sm:text-2xl font-bold text-neural-blue">info@skybrain.in</p>
+                    <div className="text-neural-gray text-sm sm:text-base space-y-1">
                       <p>• General inquiries and support</p>
                       <p>• Legal notices and compliance</p>
                       <p>• Security concerns and reports</p>
@@ -378,9 +376,9 @@ const TermsOfService = () => {
           </div>
 
           {/* Final Medical Reminder */}
-          <div className="glass-container p-6 mt-8 border-l-4 border-red-500 text-center">
-            <h3 className="text-xl font-bold text-red-400 mb-3">FINAL MEDICAL REMINDER</h3>
-            <p className="text-neural-gray">
+          <div className="glass-container p-4 sm:p-6 mt-6 sm:mt-8 border-l-4 border-red-500">
+            <h3 className="text-lg sm:text-xl font-bold text-red-400 mb-3">FINAL MEDICAL REMINDER</h3>
+            <p className="text-neural-gray text-sm sm:text-base leading-relaxed">
               <strong>SkyBrain is NOT a medical device. Do not use for medical diagnosis, treatment, or medical decision-making. 
               Always consult qualified healthcare professionals for medical concerns.</strong>
             </p>

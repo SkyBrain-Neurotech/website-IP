@@ -90,10 +90,10 @@ const VisionHero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Simplified */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="glass-card w-8 h-16 rounded-full flex justify-center items-start pt-3">
-          <div className="w-1.5 h-6 bg-gradient-to-b from-neural-blue via-mind-purple to-neural-blue rounded-full animate-pulse"></div>
+        <div className="glass-card w-8 h-16 rounded-full flex justify-center items-center">
+          <div className="w-2 h-2 bg-neural-blue rounded-full"></div>
         </div>
       </div>
 
