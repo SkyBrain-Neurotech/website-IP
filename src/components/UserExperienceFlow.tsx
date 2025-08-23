@@ -438,7 +438,7 @@ const UserExperienceFlow = () => {
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 md:space-x-6">
             <button className="cyber-button bg-neural-blue text-white font-bold px-6 md:px-8 py-3 md:py-4 rounded-xl group transform hover:scale-105 transition-all duration-300 text-sm md:text-base">
-              <Brain className="mr-2 md:mr-3 h-4 w-4 md:h-5 md:w-5 group-hover:rotate-12 transition-transform" />
+              <Brain className="mr-2 md:mr-3 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
               Start Your Journey
               <ArrowRight className="ml-2 md:ml-3 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-2 transition-transform" />
             </button>

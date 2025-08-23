@@ -180,7 +180,7 @@ const HeroSection = () => {
               size="lg" 
               className="cyber-button text-primary-foreground font-bold px-10 py-6 text-xl rounded-xl group transform hover:scale-105 transition-all duration-300"
             >
-              <Brain className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
+              <Brain className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
               Explore Neural Tech
               <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
             </Button>
@@ -207,7 +207,7 @@ const HeroSection = () => {
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <div className="relative mb-4">
-                  <stat.icon className="h-8 w-8 text-primary mx-auto group-hover:rotate-12 transition-transform" />
+                  <stat.icon className="h-8 w-8 text-primary mx-auto group-hover:scale-110 transition-transform" />
                   <div className="absolute inset-0 h-8 w-8 bg-primary/20 rounded-full blur-lg mx-auto"></div>
                 </div>
                 <div className="text-4xl md:text-5xl font-black text-primary mb-3 neon-text">

@@ -1,0 +1,254 @@
+/* Mobile Optimizations for SkyBrain Website */
+
+/* Ensure minimum touch target sizes (44x44px) */
+button,
+.btn,
+[role="button"],
+.touch-target,
+a.touch-target,
+.cyber-button,
+.glass-button {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Navigation Improvements */
+@media (max-width: 767px) {
+  /* Navigation */
+  nav {
+    padding: 1rem 0.5rem;
+  }
+  
+  nav button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem;
+  }
+  
+  /* Mobile menu items */
+  .mobile-menu-item {
+    min-height: 48px;
+    padding: 1rem;
+    width: 100%;
+  }
+  
+  /* Hero Section */
+  .hero-section h1 {
+    font-size: clamp(1.75rem, 7vw, 3rem);
+    line-height: 1.2;
+  }
+  
+  .hero-section p {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+  }
+  
+  /* Cards and Grid Layouts */
+  .card-grid,
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Form Inputs */
+  input,
+  textarea,
+  select {
+    min-height: 48px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem;
+  }
+  
+  /* Buttons */
+  .cyber-button,
+  .glass-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Footer */
+  footer {
+    padding: 2rem 1rem;
+  }
+  
+  footer .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  /* Modal/Dialog Improvements */
+  .modal,
+  .dialog,
+  [role="dialog"] {
+    width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+  
+  /* Video Sections */
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .video-card {
+    min-height: 200px;
+  }
+  
+  /* Text Readability */
+  p,
+  .text-base {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  /* Spacing Adjustments */
+  .section-padding {
+    padding: 3rem 1rem;
+  }
+  
+  /* Disable hover effects on touch devices */
+  @media (hover: none) {
+    .hover\\:scale-105:hover,
+    .hover\\:scale-110:hover,
+    .group-hover\\:scale-105:hover,
+    .group-hover\\:scale-110:hover {
+      transform: none;
+    }
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Grid Layouts */
+  .card-grid,
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  /* Navigation */
+  nav {
+    padding: 1rem;
+  }
+  
+  /* Hero Section */
+  .hero-section h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+  
+  /* Footer */
+  footer .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  /* Video Grid */
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Landscape Mobile Adjustments */
+@media (max-width: 767px) and (orientation: landscape) {
+  /* Reduce vertical spacing */
+  .hero-section {
+    padding: 2rem 1rem;
+    min-height: auto;
+  }
+  
+  /* Adjust modal height */
+  .modal,
+  .dialog {
+    max-height: calc(100vh - 4rem);
+  }
+}
+
+/* High DPI Mobile Screens */
+@media (max-width: 767px) and (-webkit-min-device-pixel-ratio: 2),
+       (max-width: 767px) and (min-resolution: 192dpi) {
+  /* Reduce animation complexity */
+  .neural-pulse,
+  .glow-breathe {
+    animation: none;
+    opacity: 1;
+  }
+  
+  /* Simplify glassmorphism effects */
+  .glass-container,
+  .glass-card {
+    backdrop-filter: blur(5px);
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Performance Optimizations for Low-End Devices */
+@supports (animation-timeline: scroll()) {
+  /* Use CSS-only scroll animations where supported */
+  .scroll-animate {
+    animation-timeline: scroll();
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  .container,
+  .max-w-7xl {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Form Validation States - Mobile Friendly */
+@media (max-width: 767px) {
+  .error-message,
+  .success-message {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Loading States */
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Optimize Image Loading */
+img {
+  loading: lazy;
+  decoding: async;
+}
+
+/* Smooth Scrolling with Fallback */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

@@ -5,10 +5,30 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const footerLinks = {
-    Technology: ['Neural Processing', 'Signal Analysis', 'AI Models', 'Privacy & Security'],
-    Applications: ['Workplace', 'Education', 'Healthcare', 'Gaming'],
-    Research: ['Publications', 'Partnerships', 'Clinical Studies', 'Open Source'],
-    Company: ['About Us', 'Careers', 'News', 'Contact']
+    Technology: [
+      { name: 'Neural Processing', path: '/technology' },
+      { name: 'Signal Analysis', path: '/technology' },
+      { name: 'AI Models', path: '/technology' },
+      { name: 'Privacy & Security', path: '/technology' }
+    ],
+    Applications: [
+      { name: 'Workplace', path: '/applications' },
+      { name: 'Education', path: '/applications' },
+      { name: 'Healthcare', path: '/applications' },
+      { name: 'Gaming', path: '/applications' }
+    ],
+    Research: [
+      { name: 'Publications', path: '/research' },
+      { name: 'Partnerships', path: '/research' },
+      { name: 'Clinical Studies', path: '/research' },
+      { name: 'Open Source', path: '/research' }
+    ],
+    Company: [
+      { name: 'About Us', path: '/team' },
+      { name: 'Careers', path: '/contact' },
+      { name: 'News', path: '/blog' },
+      { name: 'Contact', path: '/contact' }
+    ]
   };
 
   return (
@@ -47,13 +67,13 @@ const Footer = () => {
               <h3 className="text-ghost-white font-semibold mb-4 font-orbitron text-lg">{category}</h3>
               <ul className="space-y-3">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a 
-                      href="#" 
+                  <li key={link.name}>
+                    <Link 
+                      to={link.path} 
                       className="text-neural-gray hover:text-neural-blue transition-colors text-sm hover:translate-x-1 inline-block transition-all duration-300"
                     >
-                      {link}
-                    </a>
+                      {link.name}
+                    </Link>
                   </li>
                 ))}
               </ul>

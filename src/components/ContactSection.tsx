@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { validateContactForm, trackFormSubmission } from '@/lib/formHandler';
+import DemoForm from './DemoForm';
 import { 
   Mail, 
   MapPin, 
@@ -38,6 +39,7 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [showDemoForm, setShowDemoForm] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [showDialog, setShowDialog] = useState(false);
 
@@ -76,23 +78,8 @@ const ContactSection = () => {
       });
 
       const result = await response.json();
-      console.log('=== CONTACT FORM RESPONSE DEBUG ===');
-      console.log('Response from API:', result);
       
       if (response.ok && result.success) {
-        console.log('✅ SUCCESS: Contact form submitted successfully');
-        console.log('Email should be sent to info@skybrain.in');
-        console.log('Data should be logged to Google Sheets ( we need to clealy log for google sheets to know where we go wrong');
-        console.log('📊 WHAT SHOULD BE LOGGED TO GOOGLE SHEETS:');
-        console.log('- Form Type: contact');
-        console.log('- First Name:', formData.firstName);
-        console.log('- Last Name:', formData.lastName);
-        console.log('- Email:', formData.email);
-        console.log('- Interest Area:', formData.interestArea);
-        console.log('- Message:', formData.message.substring(0, 50) + '...');
-        console.log('- Timestamp: Will be generated server-side');
-        console.log('- Source: Contact Form');
-        console.log('🔍 CHECK SERVER LOGS for Google Sheets webhook status!');
         
         setSubmitStatus('success');
         setSubmitMessage(result.message);
@@ -108,8 +95,6 @@ const ContactSection = () => {
           message: ''
         });
       } else {
-        console.log('❌ ERROR: Contact form submission failed');
-        console.log('Error details:', result);
         
         setSubmitStatus('error');
         setSubmitMessage(result.message || 'Form submission failed');
@@ -353,7 +338,7 @@ const ContactSection = () => {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+                      <Loader2 className="mr-3 h-6 w-6 animate-pulse" />
                       Sending Message...
                     </>
                   ) : (
@@ -441,7 +426,10 @@ const ContactSection = () => {
                 <p className="text-neural-gray text-lg mb-6">
                   Schedule a demo and experience the future of neurotechnology.
                 </p>
-                <Button className="cyber-button text-primary-foreground font-bold px-8 py-4 text-lg rounded-xl">
+                <Button 
+                  onClick={() => setShowDemoForm(true)}
+                  className="cyber-button text-primary-foreground font-bold px-8 py-4 text-lg rounded-xl"
+                >
                   Schedule Demo
                 </Button>
               </CardContent>
@@ -477,6 +465,18 @@ const ContactSection = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Demo Form Modal */}
+      {showDemoForm && (
+        <DemoForm 
+          isModal={true}
+          onClose={() => setShowDemoForm(false)}
+          onSuccess={() => {
+            setShowDemoForm(false);
+            setShowDialog(true);
+          }}
+        />
+      )}
     </section>
   );
 };

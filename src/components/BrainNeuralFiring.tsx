@@ -30,6 +30,8 @@ const BrainNeuralFiring = () => {
   const neuronsRef = useRef<NeuralFiring[]>([]);
   const pulsesRef = useRef<ElectricalPulse[]>([]);
   const lastInteractionRef = useRef<number>(0);
+  const isTabActiveRef = useRef(true);
+  const frameCountRef = useRef(0);
 
   const createRandomFiring = useCallback((width: number, height: number, isMouseTriggered = false, mouseX = 0, mouseY = 0) => {
     const firingCount = isMouseTriggered ? 8 : 3;
@@ -113,6 +115,11 @@ const BrainNeuralFiring = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Visibility API to pause when tab is not active
+    const handleVisibilityChange = () => {
+      isTabActiveRef.current = !document.hidden;
+    };
+
     const resizeCanvas = () => {
       canvas.width = canvas.offsetWidth * window.devicePixelRatio;
       canvas.height = canvas.offsetHeight * window.devicePixelRatio;
@@ -125,11 +132,24 @@ const BrainNeuralFiring = () => {
     window.addEventListener('resize', resizeCanvas);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Create initial random firings
     createRandomFiring(canvas.offsetWidth, canvas.offsetHeight);
 
     const animate = () => {
+      // Skip animation if tab is not active
+      if (!isTabActiveRef.current) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Throttle to 30 FPS (skip every other frame)
+      frameCountRef.current++;
+      if (frameCountRef.current % 2 !== 0) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
       const now = performance.now();
       
       // Fade interaction state
@@ -279,11 +299,20 @@ const BrainNeuralFiring = () => {
       window.removeEventListener('resize', resizeCanvas);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      // Clear arrays to free memory
+      neuronsRef.current = [];
+      pulsesRef.current = [];
     };
   }, [createRandomFiring, handleMouseMove, handleMouseLeave]);
+
+  // Don't render on low-power devices
+  if (!shouldEnableAnimations(deviceInfo)) {
+    return null;
+  }
 
   return (
     <canvas
@@ -293,7 +322,8 @@ const BrainNeuralFiring = () => {
         background: 'transparent',
         width: '100%',
         height: '100%',
-        zIndex: 1
+        zIndex: 1,
+        opacity: deviceInfo.isMobile ? 0.2 : 0.3
       }}
     />
   );

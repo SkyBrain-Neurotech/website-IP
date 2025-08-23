@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useDeviceDetection, getOptimizedParticleCount, shouldEnableAnimations } from '../hooks/useDeviceDetection';
 
 interface Particle {
   x: number;
@@ -29,10 +30,15 @@ const InteractiveParticleField = () => {
   const energyWavesRef = useRef<EnergyWave[]>([]);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isInteracting, setIsInteracting] = useState(false);
+  const isTabActiveRef = useRef(true);
+  const frameCountRef = useRef(0);
+  const deviceInfo = useDeviceDetection();
 
   const createParticles = useCallback((width: number, height: number) => {
     const particles: Particle[] = [];
-    const particleCount = Math.min(150, Math.floor((width * height) / 8000));
+    // Dynamic particle count based on device capabilities
+    const baseCount = getOptimizedParticleCount(deviceInfo);
+    const particleCount = Math.min(baseCount, Math.floor((width * height) / 15000));
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -62,8 +68,8 @@ const InteractiveParticleField = () => {
     setMousePos({ x, y });
     setIsInteracting(true);
 
-    // Create energy wave on movement
-    if (Math.random() < 0.3) {
+    // Create energy wave on movement - reduced frequency
+    if (Math.random() < 0.15) {
       energyWavesRef.current.push({
         x,
         y,
@@ -99,6 +105,11 @@ const InteractiveParticleField = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Visibility API to pause when tab is not active
+    const handleVisibilityChange = () => {
+      isTabActiveRef.current = !document.hidden;
+    };
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth * window.devicePixelRatio;
       canvas.height = window.innerHeight * window.devicePixelRatio;
@@ -113,8 +124,22 @@ const InteractiveParticleField = () => {
     window.addEventListener('resize', resizeCanvas);
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const animate = () => {
+      // Skip animation if tab is not active
+      if (!isTabActiveRef.current) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Dynamic FPS based on device
+      const skipFrames = deviceInfo.isMobile ? 3 : deviceInfo.isTablet ? 2 : 1;
+      frameCountRef.current++;
+      if (frameCountRef.current % skipFrames !== 0) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       // Update and render energy waves
@@ -237,18 +262,27 @@ const InteractiveParticleField = () => {
       window.removeEventListener('resize', resizeCanvas);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      // Clear particles to free memory
+      particlesRef.current = [];
+      energyWavesRef.current = [];
     };
-  }, [createParticles, handleMouseMove, handleMouseLeave, isInteracting]);
+  }, [createParticles, handleMouseMove, handleMouseLeave, isInteracting, deviceInfo]);
+
+  // Don't render on low-power devices
+  if (!shouldEnableAnimations(deviceInfo)) {
+    return null;
+  }
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 w-full h-full pointer-events-none z-5"
       style={{
-        opacity: 0.6,
+        opacity: deviceInfo.isMobile ? 0.4 : 0.6,
         mixBlendMode: 'screen'
       }}
     />

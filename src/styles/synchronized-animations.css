@@ -1,8 +1,8 @@
-/* Synchronized Animations for Relaxing Fidget Effect */
+/* Synchronized Animations - Performance Optimized */
 
 /* Global animation timing - all elements sync to these durations */
 :root {
-  --sync-duration-fast: 2s;    /* Fast spinning elements */
+  --sync-duration-fast: 2s;    /* Fast animations */
   --sync-duration-medium: 3s;  /* Medium pulse elements */
   --sync-duration-slow: 4s;    /* Slow breathing elements */
   --sync-delay-1: 0s;         /* No delay */
@@ -11,10 +11,19 @@
   --sync-delay-4: 1.5s;       /* Three-quarter offset */
 }
 
-/* Synchronized Spinning Animation */
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Synchronized Spinning Animation - Disabled for performance */
 @keyframes syncedSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: none; }
+  100% { transform: none; }
 }
 
 /* Synchronized Pulse Animation */
@@ -29,24 +38,24 @@
   }
 }
 
-/* Synchronized Gentle Rotation */
+/* Synchronized Gentle Scale - Rotation removed for performance */
 @keyframes syncedRotate {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  25% { transform: rotate(3deg) scale(1.02); }
-  50% { transform: rotate(0deg) scale(1.05); }
-  75% { transform: rotate(-3deg) scale(1.02); }
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.02); }
+  50% { transform: scale(1.05); }
+  75% { transform: scale(1.02); }
 }
 
-/* Synchronized Floating */
+/* Synchronized Floating - Rotation removed for performance */
 @keyframes syncedFloat {
   0%, 100% { 
-    transform: translateY(0px) rotate(0deg); 
+    transform: translateY(0px); 
   }
   33% { 
-    transform: translateY(-8px) rotate(2deg); 
+    transform: translateY(-8px); 
   }
   66% { 
-    transform: translateY(4px) rotate(-1deg); 
+    transform: translateY(4px); 
   }
 }
 
@@ -105,7 +114,7 @@
 }
 
 .synced-hover-rotate:hover {
-  transform: rotate(12deg) scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Page-specific synchronization */
@@ -161,15 +170,17 @@
   animation: syncedPulse var(--sync-duration-medium) ease-in-out infinite !important;
 }
 
-/* Ensure Loader2 spin is synchronized */
+/* Loader spin - Performance optimized */
 .animate-spin {
-  animation: syncedSpin var(--sync-duration-fast) linear infinite !important;
+  /* Spinning disabled for performance - use pulse instead */
+  animation: syncedPulse var(--sync-duration-fast) ease-in-out infinite !important;
 }
 
-/* Roadmap orbital elements synchronized */
+/* Roadmap orbital elements - Rotation removed for performance */
 @keyframes syncedOrbital {
-  0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+  0% { transform: translateX(200px); }
+  50% { transform: translateX(180px); }
+  100% { transform: translateX(200px); }
 }
 
 .orbital-sync {

@@ -45,11 +45,10 @@ export const submitContactForm = async (data: FormSubmissionData): Promise<FormR
           submissionId: `skybrain_api_${Date.now()}`
         };
       } else {
-        console.warn('SkyBrain API failed:', result.message);
         // Continue to fallback methods
       }
     } catch (apiError) {
-      console.warn('SkyBrain API connection failed, trying fallback methods');
+      // API error, continue to fallback methods
     }
 
     // Method 2: Try to use Netlify Forms (if deployed on Netlify)
@@ -79,7 +78,7 @@ export const submitContactForm = async (data: FormSubmissionData): Promise<FormR
           };
         }
       } catch (netlifyError) {
-        console.warn('Netlify form submission failed, trying alternative method');
+        // Netlify form submission failed, try next method
       }
     }
 
@@ -128,7 +127,7 @@ Contact Details:
           }
         }
       } catch (web3Error) {
-        console.warn('Web3Forms submission failed, trying fallback method');
+        // Web3Forms submission failed, try next method
       }
     }
 
@@ -162,7 +161,7 @@ Contact Details:
           };
         }
       } catch (formspreeError) {
-        console.warn('Formspree submission failed, trying fallback method');
+        // Formspree submission failed, try next method
       }
     }
 
@@ -177,7 +176,7 @@ Contact Details:
       });
       localStorage.setItem('skybrain_form_submissions', JSON.stringify(submissions));
     } catch (storageError) {
-      console.warn('Could not save to localStorage:', storageError);
+      // Could not save to localStorage, not critical
     }
 
     // Return instructions for manual contact
@@ -187,7 +186,6 @@ Contact Details:
     };
 
   } catch (error) {
-    console.error('Form submission error:', error);
     
     return {
       success: false,

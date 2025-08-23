@@ -375,7 +375,7 @@ const EpicRoadmap = () => {
                   style={{
                     top: '50%',
                     left: '50%',
-                    transform: `rotate(${i * 45}deg) translateX(200px) translateY(-50%)`,
+                    transform: `translateX(${Math.cos((i * 45) * Math.PI / 180) * 200}px) translateY(${Math.sin((i * 45) * Math.PI / 180) * 200 - 50}px)`,
                     animationDelay: `${i * 0.5}s`
                   }}
                 />
@@ -742,7 +742,7 @@ const EpicRoadmap = () => {
               onClick={() => showComingSoonNotification('Community Platform')}
               className="flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-neural-blue to-mind-purple text-white font-bold rounded-xl group hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-neural-blue/30"
             >
-              <Users className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+              <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
               Join Community
             </button>
             

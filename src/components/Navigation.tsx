@@ -51,7 +51,7 @@ const Navigation = () => {
           <Link to="/" className="flex items-center space-x-3 group flex-shrink-0 mr-4 md:mr-8 lg:mr-12">
             <div className="relative flex-shrink-0">
               <div className="p-2 bg-gradient-to-br from-neural-blue/20 to-mind-purple/20 rounded-xl">
-                <Brain className="h-8 w-8 text-neural-blue nav-brain-sync synced-hover-rotate" />
+                <Brain className="h-8 w-8 text-neural-blue nav-brain-sync hover:scale-105" />
               </div>
               <div className="absolute inset-0 bg-neural-blue/20 rounded-xl blur-lg group-hover:blur-xl transition-all"></div>
             </div>

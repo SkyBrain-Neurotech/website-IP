@@ -160,7 +160,7 @@ const TechnologyExplanation = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="glass-card p-6 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-neural-blue/20 rounded-xl mx-auto w-fit mb-4">
-                <Microscope className="h-8 w-8 text-neural-blue group-hover:rotate-12 transition-transform" />
+                <Microscope className="h-8 w-8 text-neural-blue group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Signal Processing
@@ -173,7 +173,7 @@ const TechnologyExplanation = () => {
 
             <div className="glass-card p-6 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-mind-purple/20 rounded-xl mx-auto w-fit mb-4">
-                <Cpu className="h-8 w-8 text-mind-purple group-hover:rotate-12 transition-transform" />
+                <Cpu className="h-8 w-8 text-mind-purple group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Machine Learning
@@ -186,7 +186,7 @@ const TechnologyExplanation = () => {
 
             <div className="glass-card p-6 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-neural-blue/20 rounded-xl mx-auto w-fit mb-4">
-                <Waves className="h-8 w-8 text-neural-blue group-hover:rotate-12 transition-transform" />
+                <Waves className="h-8 w-8 text-neural-blue group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Neurofeedback
@@ -199,7 +199,7 @@ const TechnologyExplanation = () => {
 
             <div className="glass-card p-6 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-mind-purple/20 rounded-xl mx-auto w-fit mb-4">
-                <Target className="h-8 w-8 text-mind-purple group-hover:rotate-12 transition-transform" />
+                <Target className="h-8 w-8 text-mind-purple group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Precision Mapping
@@ -299,7 +299,7 @@ const TechnologyExplanation = () => {
             and helps optimize your mental wellness journey.
           </p>
           <button className="cyber-button text-lg md:text-xl flex items-center mx-auto group hover:scale-105 transition-transform px-6 md:px-8 py-3 md:py-4">
-            <Brain className="mr-3 md:mr-4 h-6 w-6 md:h-7 md:w-7 group-hover:rotate-12 transition-transform" />
+            <Brain className="mr-3 md:mr-4 h-6 w-6 md:h-7 md:w-7 group-hover:scale-110 transition-transform" />
             Learn More About Our Technology
           </button>
         </div>

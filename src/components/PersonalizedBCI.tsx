@@ -66,7 +66,7 @@ const PersonalizedBCI = () => {
             >
               <div className="flex items-start mb-6">
                 <div className="p-4 bg-gradient-to-br from-neural-blue/20 to-mind-purple/20 rounded-2xl mr-6 flex-shrink-0">
-                  <feature.icon className="h-8 w-8 text-neural-blue group-hover:rotate-12 transition-transform" />
+                  <feature.icon className="h-8 w-8 text-neural-blue group-hover:scale-110 transition-transform" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-ghost-white mb-3 group-hover:text-neural-blue transition-colors font-orbitron">

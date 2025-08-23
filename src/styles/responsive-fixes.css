@@ -105,17 +105,28 @@
   }
 }
 
-/* Animation sync fixes */
+/* Animation sync fixes - Performance optimized */
 .animate-spin {
-  animation: spin 1s linear infinite;
+  /* Spinning disabled for performance - use pulse instead */
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes spin {
+  /* Rotation disabled for performance */
   from {
-    transform: rotate(0deg);
+    transform: none;
   }
   to {
-    transform: rotate(360deg);
+    transform: none;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 

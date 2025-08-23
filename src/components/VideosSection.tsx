@@ -146,7 +146,7 @@ const VideosSection = () => {
               {/* Video Info */}
               <div className="flex items-start mb-4">
                 <div className="p-2 md:p-3 bg-gradient-to-br from-neural-blue/20 to-mind-purple/20 rounded-xl mr-3 md:mr-4">
-                  <Brain className="h-5 w-5 md:h-6 md:w-6 text-neural-blue group-hover:rotate-12 transition-transform" />
+                  <Brain className="h-5 w-5 md:h-6 md:w-6 text-neural-blue group-hover:scale-110 transition-transform" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg md:text-xl font-bold text-ghost-white mb-2 group-hover:text-neural-blue transition-colors font-orbitron">

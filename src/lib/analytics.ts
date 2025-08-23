@@ -5,7 +5,7 @@ export interface AnalyticsEvent {
   category: string;
   label?: string;
   value?: number;
-  custom_parameters?: Record<string, any>;
+  custom_parameters?: Record<string, string | number | boolean>;
 }
 
 export interface UserEngagement {
@@ -94,7 +94,7 @@ class Analytics {
   }
 
   // Track demo interactions
-  trackDemoInteraction(action: string, details?: Record<string, any>): void {
+  trackDemoInteraction(action: string, details?: Record<string, string | number | boolean>): void {
     const event: AnalyticsEvent = {
       name: 'demo_interaction',
       category: 'demo',
@@ -111,7 +111,7 @@ class Analytics {
   }
 
   // Track form submissions
-  trackFormSubmission(formType: string, success: boolean, details?: Record<string, any>): void {
+  trackFormSubmission(formType: string, success: boolean, details?: Record<string, string | number | boolean>): void {
     const event: AnalyticsEvent = {
       name: 'form_submission',
       category: 'conversion',
@@ -199,10 +199,7 @@ class Analytics {
     // Send to our backend analytics (when implemented)
     this.sendToBackend(event);
 
-    // Console logging for development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Analytics Event:', event);
-    }
+    // Console logging for development removed for production
   }
 
   // Send event to backend analytics API
@@ -230,14 +227,11 @@ class Analytics {
       }
     } catch (error) {
       // Silently fail analytics - don't break user experience
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('Analytics backend error:', error);
-      }
     }
   }
 
   // Get current session data
-  getSessionData(): any {
+  getSessionData(): Record<string, unknown> {
     return JSON.parse(localStorage.getItem('skybrain_session') || '{}');
   }
 
@@ -272,9 +266,9 @@ export const analytics = new Analytics();
 export const trackPageView = (path: string) => analytics.trackPageView(path);
 export const trackButtonClick = (buttonName: string, location: string, destination?: string) => 
   analytics.trackButtonClick(buttonName, location, destination);
-export const trackDemoInteraction = (action: string, details?: Record<string, any>) => 
+export const trackDemoInteraction = (action: string, details?: Record<string, string | number | boolean>) => 
   analytics.trackDemoInteraction(action, details);
-export const trackFormSubmission = (formType: string, success: boolean, details?: Record<string, any>) => 
+export const trackFormSubmission = (formType: string, success: boolean, details?: Record<string, string | number | boolean>) => 
   analytics.trackFormSubmission(formType, success, details);
 
 // Export analytics instance as default

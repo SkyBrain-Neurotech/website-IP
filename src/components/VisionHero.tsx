@@ -35,7 +35,7 @@ const VisionHero = () => {
         <div className="fade-in-up">
           {/* Interactive Badge */}
           <div className="inline-flex items-center space-x-3 glass-card rounded-full px-6 py-3 mb-8 hover:scale-105 transition-transform cursor-pointer group holographic">
-            <Zap className={`h-5 w-5 text-neural-blue drop-shadow-lg transition-all duration-300 ${brainPulse === 0 ? 'animate-pulse' : brainPulse === 1 ? 'animate-bounce' : 'animate-spin'}`} />
+            <Zap className={`h-5 w-5 text-neural-blue drop-shadow-lg transition-all duration-300 ${brainPulse === 0 ? 'animate-pulse' : brainPulse === 1 ? 'animate-bounce' : 'animate-pulse'}`} />
             <span className="text-xs sm:text-sm font-semibold text-neural-gray tracking-wide font-orbitron uppercase group-hover:text-neural-blue transition-colors drop-shadow-lg">
               Neurotechnology - EEG
             </span>
@@ -69,7 +69,7 @@ const VisionHero = () => {
               className="neural-gradient text-white font-bold px-6 py-3 sm:px-8 sm:py-4 text-base sm:text-lg rounded-xl group transition-all transform hover:scale-110 font-orbitron relative overflow-hidden min-h-[44px] w-full sm:w-auto"
             >
               <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-              <Brain className="mr-3 h-6 w-6 group-hover:rotate-180 transition-transform duration-500" />
+              <Brain className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-500" />
               <span className="relative z-10 text-neural-blue">Experience Demo</span>
               <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
             </Button>

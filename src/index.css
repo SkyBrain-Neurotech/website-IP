@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap');
 @import './styles/responsive-fixes.css';
 @import './styles/synchronized-animations.css';
+@import './styles/mobile-optimizations.css';
 
 @tailwind base;
 @tailwind components;
@@ -260,8 +261,8 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(2deg); }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
 }
 
 @keyframes neuralShift {
@@ -341,9 +342,9 @@
 
 /* Particle Field Effects */
 @keyframes particleFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(120deg); }
-  66% { transform: translateY(5px) rotate(240deg); }
+  0%, 100% { transform: translateY(0); }
+  33% { transform: translateY(-10px); }
+  66% { transform: translateY(5px); }
 }
 
 @keyframes energyWave {
@@ -515,8 +516,9 @@
 
 /* Enhanced Animations */
 @keyframes hologramScan {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.02); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes holoShine {

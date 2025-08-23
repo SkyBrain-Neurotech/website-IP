@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Brain, Mail, User, Phone, Calendar, Loader2 } from 'lucide-react';
+import { Brain, Mail, User, Phone, Calendar, Loader2, X } from 'lucide-react';
 
 interface DemoFormProps {
   onSuccess?: () => void;
+  onClose?: () => void;
   className?: string;
+  isModal?: boolean;
 }
 
 // Use relative URLs for all environments (Vite dev server proxies to Vercel functions)
@@ -23,7 +25,7 @@ declare global {
   }
 }
 
-const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
+const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, onClose, className = "", isModal = false }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -72,24 +74,8 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
       });
 
       const result = await response.json();
-      console.log('=== DEMO FORM RESPONSE DEBUG ===');
-      console.log('Response from API:', result);
 
       if (response.ok && result.success) {
-        console.log('✅ SUCCESS: Demo form submitted successfully');
-        console.log('Email should be sent to info@skybrain.in');
-        console.log('Data should be logged to Google Sheets');
-        console.log('📊 WHAT SHOULD BE LOGGED TO GOOGLE SHEETS:');
-        console.log('- Form Type: demo-request');
-        console.log('- Name:', formData.name);
-        console.log('- Email:', formData.email);
-        console.log('- Phone:', formData.phone || 'Not provided');
-        console.log('- Company:', formData.company || 'Not specified');
-        console.log('- Interest:', formData.interest);
-        console.log('- Message:', formData.message.substring(0, 50) + '...' || 'None provided');
-        console.log('- Timestamp: Will be generated server-side');
-        console.log('- Source: website_demo_form');
-        console.log('🔍 CHECK SERVER LOGS for Google Sheets webhook status!');
         
         // Track successful form submission
         if (typeof window !== 'undefined' && window.trackFormSubmission) {
@@ -113,12 +99,9 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
           onSuccess();
         }
       } else {
-        console.log('❌ ERROR: Demo form submission failed');
-        console.log('Error details:', result);
         throw new Error(result.message || 'Demo request failed');      }
 
     } catch (error) {
-      console.error('Form submission error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -131,8 +114,17 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
     }
   };
 
-  return (
-    <div className={`glass-card rounded-2xl p-8 border border-neural-blue/30 ${className}`}>
+  const formContent = (
+    <div className={`glass-card rounded-2xl p-8 border border-neural-blue/30 relative ${className}`}>
+      {isModal && onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 text-neural-gray hover:text-neural-blue transition-colors"
+          aria-label="Close modal"
+        >
+          <X className="h-6 w-6" />
+        </button>
+      )}
       <div className="text-center mb-8">
         <div className="inline-flex items-center space-x-3 mb-4">
           <div className="p-3 bg-neural-blue/20 rounded-xl">
@@ -308,12 +300,12 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
           <div className="flex items-center justify-center space-x-3">
             {isSubmitting ? (
               <>
-                <Loader2 className="h-6 w-6 animate-spin" style={{ animationDuration: '1s' }} />
+                <Loader2 className="h-6 w-6 animate-pulse" style={{ animationDuration: '1s' }} />
                 <span>Submitting Request...</span>
               </>
             ) : (
               <>
-                <Calendar className="h-6 w-6 synced-hover-rotate" />
+                <Calendar className="h-6 w-6 hover:scale-105" />
                 <span>Request Demo Access</span>
               </>
             )}
@@ -340,6 +332,25 @@ const DemoForm: React.FC<DemoFormProps> = ({ onSuccess, className = "" }) => {
       </div>
     </div>
   );
+
+  if (isModal) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
+        <div 
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          onClick={onClose}
+        ></div>
+        
+        {/* Modal Content */}
+        <div className="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          {formContent}
+        </div>
+      </div>
+    );
+  }
+
+  return formContent;
 };
 
 export default DemoForm;

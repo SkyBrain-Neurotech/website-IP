@@ -50,13 +50,8 @@ const SimpleNewsletterSignup: React.FC<SimpleNewsletterSignupProps> = ({
       });
 
       const result = await response.json();
-      console.log('=== SIMPLE NEWSLETTER SIGNUP DEBUG ===');
-      console.log('Response from API:', result);
 
       if (response.ok && result.success) {
-        console.log('✅ SUCCESS: Newsletter signup submitted successfully');
-        console.log('Email should be sent to info@skybrain.in');
-        console.log('Data should be logged to Google Sheets');
         setIsSubmitted(true);
         
         // Track with analytics if available
@@ -68,11 +63,9 @@ const SimpleNewsletterSignup: React.FC<SimpleNewsletterSignupProps> = ({
           });
         }
       } else {
-        console.log('❌ ERROR: Newsletter signup submission failed');
         throw new Error(result.message || 'Subscription failed');
       }
     } catch (err) {
-      console.error('❌ Newsletter signup error:', err);
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -173,7 +166,7 @@ const SimpleNewsletterSignup: React.FC<SimpleNewsletterSignupProps> = ({
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-pulse" />
                 Subscribing...
               </>
             ) : (

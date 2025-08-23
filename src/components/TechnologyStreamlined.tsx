@@ -127,7 +127,7 @@ const TechnologyStreamlined = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="glass-card p-8 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-neural-blue/20 rounded-xl mx-auto w-fit mb-4">
-                <Shield className="h-8 w-8 text-neural-blue group-hover:rotate-12 transition-transform" />
+                <Shield className="h-8 w-8 text-neural-blue group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Non-Invasive
@@ -139,7 +139,7 @@ const TechnologyStreamlined = () => {
             
             <div className="glass-card p-8 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-mind-purple/20 rounded-xl mx-auto w-fit mb-4">
-                <Zap className="h-8 w-8 text-mind-purple group-hover:rotate-12 transition-transform" />
+                <Zap className="h-8 w-8 text-mind-purple group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Real-Time
@@ -151,7 +151,7 @@ const TechnologyStreamlined = () => {
             
             <div className="glass-card p-8 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-neural-blue/20 rounded-xl mx-auto w-fit mb-4">
-                <Users className="h-8 w-8 text-neural-blue group-hover:rotate-12 transition-transform" />
+                <Users className="h-8 w-8 text-neural-blue group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Accessible
@@ -163,7 +163,7 @@ const TechnologyStreamlined = () => {
             
             <div className="glass-card p-8 text-center group hover:scale-105 transition-all duration-300">
               <div className="p-4 bg-mind-purple/20 rounded-xl mx-auto w-fit mb-4">
-                <Brain className="h-8 w-8 text-mind-purple group-hover:rotate-12 transition-transform" />
+                <Brain className="h-8 w-8 text-mind-purple group-hover:scale-110 transition-transform" />
               </div>
               <h3 className="text-xl font-bold text-ghost-white mb-3 font-orbitron">
                 Personal
